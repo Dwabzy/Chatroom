@@ -8,13 +8,11 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
   styleUrls: ['./agent-dashboard.component.scss']
 })
 export class AgentDashboardComponent implements OnInit {
-
+  visitorList: Array<any> = [];
   constructor(public activatedRoute: ActivatedRoute, private webSocketService: WebSocketService) { }
 
   ngOnInit(): void {
-    this.webSocketService.listen('new-user').subscribe((data) => {
-      console.log(data);
-    })
+    this.webSocketService.emit('get-unconnected-visitors-request', "");    
   }
 
 }

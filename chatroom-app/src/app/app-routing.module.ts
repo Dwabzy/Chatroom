@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'signup', component: HomepageComponent },
   { path: 'agent-dashboard/:username', component: AgentDashboardComponent },
   { path: 'agent-dashboard/:username/chat', component: AgentDashboardComponent },
+  { path: 'agent-dashboard/:username/visitors', component: AgentDashboardComponent },
   { path: 'admin-dashboard/:username', component: AdminDashboardComponent },
   { path: 'admin-dashboard/:username/create-chatroom', component: AdminDashboardComponent },
   { path: 'admin-dashboard/:username/chatrooms', component: AdminDashboardComponent },

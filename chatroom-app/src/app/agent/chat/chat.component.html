@@ -8,8 +8,8 @@
     </button>
   </div>
   <div id="contact-list" class="contact-list" [class.drop-down]="displayDropdownContacts">
-    <div *ngFor="let visitor of visitorsList">
-      <button class="contact">{{visitor.visitor_name}}</button>
+    <div *ngFor="let visitor of visitorList">
+      <button class="contact">{{visitor.visitorName}}</button>
     </div>
   </div>
   <!-- End of Sidebar -->
@@ -18,33 +18,30 @@
   <div class="message-window">
     <div *ngFor="let message of messages; let i = index" class="message-container">
 
-      <div *ngIf="message.user_type==='employee'" class="sent-message media-right">
+      <div *ngIf="message.sender==='agent'" class="sent-message media-right">
         {{message.message}}
       </div>
-      <div *ngIf="message.user_type==='employee' && message.displayTime" class="time media-right">{{message.time}}
+      <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">{{message.time}}
       </div>
       <div *ngIf="!message.displayTime" class="space-2"></div>
       <div *ngIf="message.displayTime" class="space"></div>
 
-      <div *ngIf="message.user_type==='customer'" class="received-message media-left">
+      <div *ngIf="message.sender==='visitor'" class="received-message media-left">
         {{message.message}}
       </div>
-      <div *ngIf="message.user_type==='customer' && message.displayTime" class="time media-left">
+      <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-left">
         {{message.time}}</div>
       <div *ngIf="!message.displayTime" class="space-2"></div>
       <div *ngIf="message.displayTime" class="space"></div>
 
     </div>
     <div class="text-box">
-      <!-- <form #employeeMessageForm="ngForm"
-        (ngSubmit)="employeeMessageForm.valid && onSubmit(employeeMessageForm, 'employee')"> -->
-      <!-- <input type="text" name="message" #message="ngModel" [(ngModel)]="chatService.selectedChat.message"
-          placeholder="Type your message" /> -->
-      <input type="text" placeholder="Type your message" />
-      <button class="send-button">
-        <mat-icon> send </mat-icon>
-      </button>
-      <!-- </form> -->
+      <form (ngSubmit)="sendMessage()">
+        <input #agentMessage type="text" placeholder="Type your message" />
+        <button class="send-button">
+          <mat-icon> send </mat-icon>
+        </button>
+      </form>
     </div>
   </div>
   <div class="customer-info">

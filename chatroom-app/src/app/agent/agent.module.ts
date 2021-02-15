@@ -4,14 +4,17 @@ import { AgentDashboardComponent } from './agent-dashboard/agent-dashboard.compo
 import { NavbarComponent } from './navbar/navbar.component';
 import { MaterialModule } from '../material/material.module';
 import { ChatComponent } from './chat/chat.component';
+import { VisitorsComponent } from './visitors/visitors.component';
+import { FormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [AgentDashboardComponent, NavbarComponent, ChatComponent],
+  declarations: [AgentDashboardComponent, NavbarComponent, ChatComponent, VisitorsComponent],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ]
 })
 export class AgentModule { }

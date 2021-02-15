@@ -1,43 +1,31 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { NgForm } from '@angular/forms';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 
 @Component({
   selector: 'agent-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
+  providers: [NgForm]
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   displayDropdownContacts: boolean = false;
   theme: 'dark-theme' | 'light-theme' = 'light-theme';
-  visitorsList: Array<any> = [];
-  messages: Array<any> = [
-    { message: "Hello!", time: "2021-02-14 22:10:20", user_type: "employee" },
-    { message: "How may I help you?", time: "2021-02-14 22:10:24", user_type: "employee" },
-    { message: "Uh, Hi! I am looking to buy a sweatshirt", time: "2021-02-14 22:10:56", user_type: "customer" },
-    { message: "Where can I find them?", time: "2021-02-14 22:11:15", user_type: "customer" },
-    { message: "LOL, What a moron, you don't even know where to find sweatshirts", time: "2021-02-14 22:12:20", user_type: "employee" },
-    { message: "Waow, that was rude... You were the one who asked me what you can do for me.", time: "2021-02-14 22:12:51", user_type: "customer" },
-    { message: "Yeah, I did ask, doesnt mean I am going to do it though. LOL", time: "2021-02-14 22:13:14", user_type: "employee" },
-    { message: "I demand to speak with your manager!", time: "2021-02-14 22:13:42", user_type: "customer" },
-    { message: "What is she gonna do? Fire me?", time: "2021-02-14 22:13:27", user_type: "employee" },
-    { message: "Yes, I will make sure you get fired.", time: "2021-02-14 22:14:07", user_type: "customer" },
-    { message: "How can I contact her?", time: "2021-02-14 22:14:43", user_type: "customer" },
-    { message: "LOL, You think I am going to give you her contact info just so you can get me fired?", time: "2021-02-14 22:14:59", user_type: "employee" },
-    { message: "How dumb can you be?", time: "2021-02-14 22:15:16", user_type: "employee" },
-    { message: "This is extremely impolite and I will find a way to contact her.", time: "2021-02-14 22:15:33", user_type: "customer" },
-    { message: "Fricking douchebag, just you wait!", time: "2021-02-14 22:15:54", user_type: "customer" },
-    { message: "LMAO okay, Have a great time!", time: "2021-02-14 22:16:28", user_type: "employee" }
-  ];
+  visitorList: Array<any> = [];
+  messages: Array<any> = [];
 
   @ViewChild('dropDownButton') dropDownButton!: ElementRef;
   @ViewChild('contactList') contactList!: ElementRef;
+  @ViewChild('agentMessage') agentMesage!: ElementRef;
 
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    private breakpointObserver: BreakpointObserver) { }
+    private breakpointObserver: BreakpointObserver,
+    private webSocketService: WebSocketService) { }
   
   ngAfterViewInit(): void {
     
@@ -51,11 +39,83 @@ export class ChatComponent implements OnInit, AfterViewInit {
       this.displayDropdownContacts = state.matches;
     });
 
-   
+    let username = this.activatedRoute.snapshot.params.username;
+    this.webSocketService.emit('get-connected-visitors-request', username);
+
+    this.webSocketService.listen('send-connnected-visitors').subscribe((data: any) => {
+      this.visitorList = data;
+      console.log(this.visitorList);
+    })
+
+    this.webSocketService.listen('new-visitor-socket-id').subscribe((data: any) => {
+      let { visitorName, visitorSocketId } = data;
+
+      let visitorId = visitorName.slice(-4);
+      let visitor = this.visitorList.find(visitorChat => visitorChat.visitorId === visitorId);
+      let index = this.visitorList.indexOf(visitor);
+
+      // Update new VistorSocketID  in LocalStore and Visitors List.
+      let chatDetails = JSON.parse(<string>localStorage.getItem('chatDetails'));
+      chatDetails.visitorSocketId = visitorSocketId;
+      chatDetails.visitorId = visitorId;
+      localStorage.setItem('chatDetails', JSON.stringify(chatDetails));
+      if(index !== -1)
+        this.visitorList[index].visitorSocketId = visitorSocketId;
+    })
+
+    this.webSocketService.listen('receive-visitor-message').subscribe((data: any) => {
+      let { message, sender, time } = data;
+      console.log(data);
+      this.messages.push(
+        {
+          message,
+          sender,
+          time: this.getTimeMessage(time),
+        }
+      )
+
+    })
+  }
+
+  getTimeMessage = (dateTime: string): string => {
+    let date: Date = new Date(dateTime);
+      let time = (new Date().getTime() - date.getTime())/1000;
+    // Algorithm to display time
+    let localDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear().toLocaleString().slice(3);
+    let localTime;
+    if (date.getHours() < 12)
+      localTime = date.getHours() + ":" + date.getMinutes() + " am";
+    else
+      localTime = (date.getHours() % 12) + ":" + date.getMinutes() + " pm";
+
+    // let seconds = Math.floor(time % 60);
+    let minutes = Math.floor(time / 60) % 60;
+    let hours = Math.floor(time / 3600) % 24;
+    let days = Math.floor(time / (24 * 3600)) % 30;
+    if (days > 0) {
+      return localDate + " " + localTime;
+    }
+    else if (hours > 0 || minutes > 1) {
+      return localTime;
+    }
+    else if (minutes === 1) {
+      return minutes + " minute ago"
+    }
+    else{
+      return "Just now";
+    }
   }
 
 
-
+  sendMessage = (): void => {
+    let message = this.agentMesage.nativeElement.value;
+    let chatDetails = JSON.parse(<string>localStorage.getItem('chatDetails'));
+    chatDetails.agentSocketId = this.webSocketService.socket.id;
+    this.messages.push(
+      {message: message, sender: "agent", time: ""}
+    )
+    this.webSocketService.emit('agent-message', { chatDetails, message });
+  }
   
 
   toggleDropDown() {

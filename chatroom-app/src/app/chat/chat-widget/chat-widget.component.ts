@@ -12,31 +12,16 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   theme: 'dark-theme' | 'light-theme' = 'light-theme';
   visitorsName: string = "";
   toggleChatWindow: boolean = false;
+  chatroomName: string = "";
 
-  @Input() messages: Array<any> = [
-    { message: "Hello!", time: "2021-02-14 22:10:20", user_type: "employee" },
-    { message: "How may I help you?", time: "2021-02-14 22:10:24", user_type: "employee" },
-    { message: "Uh, Hi! I am looking to buy a sweatshirt", time: "2021-02-14 22:10:56", user_type: "customer" },
-    { message: "Where can I find them?", time: "2021-02-14 22:11:15", user_type: "customer" },
-    { message: "LOL, What a moron, you don't even know where to find sweatshirts", time: "2021-02-14 22:12:20", user_type: "employee" },
-    { message: "Waow, that was rude... You were the one who asked me what you can do for me.", time: "2021-02-14 22:12:51", user_type: "customer" },
-    { message: "Yeah, I did ask, doesnt mean I am going to do it though. LOL", time: "2021-02-14 22:13:14", user_type: "employee" },
-    { message: "I demand to speak with your manager!", time: "2021-02-14 22:13:42", user_type: "customer" },
-    { message: "What is she gonna do? Fire me?", time: "2021-02-14 22:13:27", user_type: "employee" },
-    { message: "Yes, I will make sure you get fired.", time: "2021-02-14 22:14:07", user_type: "customer" },
-    { message: "How can I contact her?", time: "2021-02-14 22:14:43", user_type: "customer" },
-    { message: "LOL, You think I am going to give you her contact info just so you can get me fired?", time: "2021-02-14 22:14:59", user_type: "employee" },
-    { message: "How dumb can you be?", time: "2021-02-14 22:15:16", user_type: "employee" },
-    { message: "This is extremely impolite and I will find a way to contact her.", time: "2021-02-14 22:15:33", user_type: "customer" },
-    { message: "Fricking douchebag, just you wait!", time: "2021-02-14 22:15:54", user_type: "customer" },
-    { message: "LMAO okay, Have a great time!", time: "2021-02-14 22:16:28", user_type: "employee" }
-  ];
+  @Input() messages: Array<any> = [];
 
   @ViewChild('titleBar')titleBar!: ElementRef;
   @ViewChildren('customerMessage') customerMessages!: QueryList<ElementRef>;
   @ViewChild('chatWindow') chatWindow!: ElementRef;
   @ViewChild('textBox') textBox!: ElementRef;
   @ViewChild('chatBody') chatBody!: ElementRef;
+  @ViewChild('visitorMessage') visitorMessage!: ElementRef;
 
 
   constructor(public activatedRoute: ActivatedRoute, private webSocketService: WebSocketService) { }
@@ -47,7 +32,35 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.theme = localStorage.getItem('theme') === 'Dark' ? 'dark-theme' : 'light-theme';
-    this.time();
+    this.chatroomName = this.activatedRoute.snapshot.params.chatroomName;
+    this.webSocketService.emit('new-visitor', this.chatroomName);
+
+    this.webSocketService.listen('connected-message').subscribe(data => {
+      console.log(data);
+      localStorage.setItem('chatDetails', JSON.stringify(data));
+    })
+
+    this.webSocketService.listen('receive-agent-message').subscribe((data: any) => {
+      let { message, sender, time } = data;
+      console.log(data);
+      this.messages.push(
+        {
+          message,
+          sender,
+          time: this.getTimeMessage(time),
+        }
+      )
+
+    })
+  }
+
+  sendMessage = (): void => {
+    let message = this.visitorMessage.nativeElement.value;
+    let chatDetails = JSON.parse(<string>localStorage.getItem('chatDetails'));
+    this.messages.push(
+      {message: message, sender: "visitor", time: ""}
+    )
+    this.webSocketService.emit('visitor-message', { chatDetails, message });
   }
 
   toggleChatWindowHandler = (): void => {
@@ -71,8 +84,9 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
       document.body.setAttribute('data-theme', 'light');
   }
 
-  getTimeMessage = (date: Date, time: any): string => {
-    
+  getTimeMessage = (dateTime: string): string => {
+    let date: Date = new Date(dateTime);
+      let time = (new Date().getTime() - date.getTime())/1000;
     // Algorithm to display time
     let localDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear().toLocaleString().slice(3);
     let localTime;
@@ -97,26 +111,5 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
     else{
       return "Just now";
     }
-  }
-
-  time = (): void => {
-    this.messages.map((message, index) => {
-      // Get the string to be displayed under the message as time sent.
-      let date: Date = new Date(message.time);
-      let time = (new Date().getTime() - date.getTime())/1000;
-      message.time = this.getTimeMessage(date, time);
-      message.displayTime = true;
-      let currentSender = message.user_type;
-      let timeDifference = 0;
-      if (this.messages[index + 1]) {
-        timeDifference = Math.floor((new Date(this.messages[index + 1].time).getTime() - date.getTime()) / 60 / 1000);
-      }
-
-      /* Display Time only if the time difference between consecutive messages is greater than 5 minutes or if the sender of 2 consecutive
-      messages is different */
-      if (this.messages[index + 1] && currentSender === this.messages[index + 1].user_type && timeDifference < 5) {
-        message.displayTime = false;
-      }
-   })
   }
 }

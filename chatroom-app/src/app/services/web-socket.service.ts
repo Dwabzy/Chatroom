@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
   providedIn: 'root'
 })
 export class WebSocketService {
+
   socket: any;
   readonly uri: string = "ws://localhost:3000";
 

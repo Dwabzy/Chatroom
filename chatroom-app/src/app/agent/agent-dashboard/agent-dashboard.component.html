@@ -2,5 +2,8 @@
   <div class="main-content">
     <agent-chat *ngIf="this.activatedRoute.routeConfig?.path === 'agent-dashboard/:username/chat'">
     </agent-chat>
+    <visitors *ngIf="this.activatedRoute.routeConfig?.path === 'agent-dashboard/:username/visitors'"
+      [visitorList]="visitorList">
+    </visitors>
   </div>
 </agent-navbar>
