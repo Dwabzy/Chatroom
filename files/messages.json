@@ -1,0 +1,24 @@
+{
+    "visitors":[
+            {
+                "agent_id" : "",
+                "visitor_id": "",
+                "visitor_ip": "",
+                "chatroom_name": "",
+                "visitor_details": {
+                    "visitor_name": ""
+                },
+                "messages": [{
+                    "sender": "",
+                    "time": "",
+                    "message": ""
+                },
+                {
+                    "sender": "",
+                    "time": "",
+                    "message": ""
+                }
+                ]
+            }
+        ]
+}

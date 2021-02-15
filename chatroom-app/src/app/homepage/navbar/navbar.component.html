@@ -1,0 +1,33 @@
+<div class="main-container">
+  <div class="navbar" id="navbar">
+    <span class="title">Chatroom</span>
+    <span class="spacer"></span>
+    <!-- Displayed when the width of the screen is less than 400px -->
+    <div *ngIf="dropdownNavbar" class="dropdown-nav">
+      <button mat-icon-button (click)="toggleNavbarHandler()">
+        <mat-icon id="dropdown-button" class="dropdown-button"> arrow_drop_down </mat-icon>
+      </button>
+      <div class="dropdown-links" id="dropdown-links">
+        <button mat-icon-button class="brightness" (click)="toggleTheme()" matTooltip="Toggle dark theme">
+          <mat-icon>
+            brightness_6
+          </mat-icon>
+        </button>
+        <button (click)="this.router.navigateByUrl('/login')">Login</button>
+        <button (click)="this.router.navigateByUrl('/signup')">Signup</button>
+      </div>
+    </div>
+
+    <!-- Displayed when the width of the screen is more than 400px -->
+    <div *ngIf="!dropdownNavbar" class="nav-list" id="nav-list">
+      <button mat-icon-button class="brightness" (click)="toggleTheme()" matTooltip="Toggle dark theme">
+        <mat-icon>
+          brightness_6
+        </mat-icon>
+      </button>
+      <button (click)="this.router.navigateByUrl('/login')">Login</button>
+      <button (click)="this.router.navigateByUrl('/signup')">Signup</button>
+    </div>
+  </div>
+  <ng-content></ng-content>
+</div>

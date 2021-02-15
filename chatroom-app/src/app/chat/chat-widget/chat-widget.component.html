@@ -1,0 +1,75 @@
+<div class="widget">
+  <button class="icon-button" (click)="toggleChatWindowHandler()">
+    <svg class="icon" version="1.0" xmlns="http://www.w3.org/2000/svg" width="225.000000pt" height="225.000000pt"
+      viewBox="0 0 225.000000 225.000000" preserveAspectRatio="xMidYMid meet">
+      <g transform="translate(0.000000,225.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+        <path d="M325 2236 c-151 -37 -281 -171 -314 -324 -15 -73 -15 -941 0 -1014
+   24 -112 109 -228 207 -281 94 -51 140 -57 464 -57 l298 0 0 -221 c0 -183 3
+   -227 16 -255 29 -61 93 -92 162 -79 32 6 76 45 312 281 l276 274 60 0 c210 0
+   391 141 433 338 15 72 15 941 0 1014 -33 157 -170 293 -327 327 -77 16 -1518
+   14 -1587 -3z m1571 -292 c15 -11 37 -33 48 -48 20 -27 21 -41 24 -467 2 -285
+   -1 -453 -8 -478 -6 -24 -24 -52 -45 -70 -34 -30 -39 -31 -128 -31 -155 -1
+   -149 3 -341 -189 -94 -94 -175 -171 -179 -171 -4 0 -7 61 -7 135 l0 135 -32
+   36 c-21 22 -48 38 -73 44 -22 5 -207 10 -412 10 l-372 0 -35 31 c-20 17 -40
+   47 -46 67 -13 49 -13 864 0 913 12 41 55 86 96 99 16 5 356 8 756 7 717 -2
+   727 -2 754 -23z" />
+        <path d="M614 1508 c-63 -59 -63 -148 0 -205 31 -29 42 -33 92 -33 52 0 59 3
+   95 39 36 36 39 43 39 96 0 53 -3 60 -39 96 -36 36 -43 39 -95 39 -50 0 -61 -4
+   -92 -32z" />
+        <path d="M1029 1501 c-36 -36 -39 -43 -39 -96 0 -53 3 -60 39 -96 36 -36 43
+   -39 96 -39 53 0 60 3 96 39 36 36 39 43 39 96 0 53 -3 60 -39 96 -36 36 -43
+   39 -96 39 -53 0 -60 -3 -96 -39z" />
+        <path d="M1449 1501 c-36 -36 -39 -43 -39 -96 0 -53 3 -60 39 -96 36 -36 43
+   -39 96 -39 53 0 60 3 96 39 36 36 39 43 39 96 0 53 -3 60 -39 96 -36 36 -43
+   39 -96 39 -53 0 -60 -3 -96 -39z" />
+      </g>
+    </svg>
+  </button>
+  <div #chatWindow class="chat-window ">
+    <div #titleBar class="title-bar">
+      <div class="title">{{visitorsName}} {{messages.length}} </div>
+      <div class="spacer"></div>
+      <button (click)="toggleTheme()" matTooltip="Toggle dark theme">
+        <mat-icon>
+          brightness_6
+        </mat-icon>
+      </button>
+      <button>
+        <mat-icon> close </mat-icon>
+      </button>
+    </div>
+
+    <div #chatBody class="chat-body">
+      <div *ngFor="let message of messages; let i = index" class="message-container">
+
+        <div #customerMessage *ngIf="message.user_type==='customer'" class="sent-message media-right">
+          {{message.message}}
+        </div>
+        <div *ngIf="message.user_type==='customer' && message.displayTime" class="time media-right">{{message.time}}
+        </div>
+        <div *ngIf="!message.displayTime" class="space-2"></div>
+        <div *ngIf="message.displayTime" class="space"></div>
+
+        <div *ngIf="message.user_type==='employee'" class="received-message media-left">
+          {{message.message}}
+        </div>
+        <div *ngIf="message.user_type==='employee' && message.displayTime" class="time media-left">
+          {{message.time}}</div>
+        <div *ngIf="!message.displayTime" class="space-2"></div>
+        <div *ngIf="message.displayTime" class="space"></div>
+
+      </div>
+
+      <div #textBox class="text-box">
+        <!-- <form #customerMessageForm="ngForm"
+            (ngSubmit)="customerMessageForm.valid && onSubmit(customerMessageForm, 'customer')"> -->
+        <!-- <input class="message-input" name="message" #message="ngModel" [(ngModel)]="chatService.selectedChat.message"
+              placeholder="Type your Message" /> -->
+        <input class="message-input" name="message" />
+        <button class="send-button">
+          <mat-icon> send </mat-icon>
+        </button>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>

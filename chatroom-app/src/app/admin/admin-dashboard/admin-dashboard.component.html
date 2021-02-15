@@ -1,0 +1,8 @@
+<admin-navbar>
+  <div class="main-content">
+    <create-chatroom *ngIf="this.activatedRoute.routeConfig?.path === 'admin-dashboard/:username/create-chatroom'">
+    </create-chatroom>
+    <display-chatrooms *ngIf="this.activatedRoute.routeConfig?.path === 'admin-dashboard/:username/chatrooms'">
+    </display-chatrooms>
+  </div>
+</admin-navbar>

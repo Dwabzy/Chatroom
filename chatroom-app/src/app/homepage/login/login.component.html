@@ -1,0 +1,26 @@
+<form #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
+  <mat-card class="login-form">
+    <div *ngIf="signInForm.submitted && usernameEmail.errors?.pattern">
+      <label class="validation-message">Invalid email address.</label>
+    </div>
+
+    <mat-form-field class="flex" appearance="outline">
+      <mat-label>Username/ Email</mat-label>
+      <input matInput type="text" name="usernameEmail" #usernameEmail="ngModel"
+        [(ngModel)]="userAuthService.loginModel.usernameEmail" placeholder="Username/Email">
+    </mat-form-field>
+    <mat-form-field class="flex" appearance="outline">
+      <input matInput [type]="showPassword ? 'text' : 'password'" name="password" #password="ngModel"
+        [(ngModel)]="userAuthService.loginModel.password" placeholder="Password" minlength="4"
+        [ngClass]="{'invalid-textbox' :signInForm.submitted && !password.valid }">
+      <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}
+      </mat-icon>
+    </mat-form-field>
+    <div *ngIf="signInForm.submitted && password.errors?.minlength">
+      <label class="validation-message">Minimum 4 characters.</label>
+    </div>
+    <div class="flex">
+      <button mat-raised-button>Login</button>
+    </div>
+  </mat-card>
+</form>

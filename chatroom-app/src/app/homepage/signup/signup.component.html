@@ -1,0 +1,67 @@
+<form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
+  <mat-card class="login-form">
+    <mat-form-field class="flex">
+      <mat-label class="">First Name</mat-label>
+      <input matInput type="text" #firstName="ngModel" [(ngModel)]="userAuthService.signupModel.firstName"
+        name="firstName" placeholder="First Name"
+        [ngClass]="{'invalid-textbox' :signUpForm.submitted && !firstName.valid }">
+      <div *ngIf="signUpForm.submitted && !firstName.valid">
+        <mat-error class="validation-message">This field is required.</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="flex">
+      <mat-label class="">Last Name</mat-label>
+      <input matInput type="text" #lastName="ngModel" [(ngModel)]="userAuthService.signupModel.lastName" name="lastName"
+        placeholder="Last Name" [ngClass]="{'invalid-textbox' :signUpForm.submitted && !lastName.valid }">
+      <div *ngIf="signUpForm.submitted && !lastName.valid">
+        <mat-error class="validation-message">This field is required.</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="flex">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput #email="ngModel" [(ngModel)]="userAuthService.signupModel.email" name="email"
+        [errorStateMatcher]="matcher" placeholder="name@email.com">
+      <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="flex">
+      <mat-label>Phone No.</mat-label>
+      <input type="tel" matInput #mobileNo="ngModel" [(ngModel)]="userAuthService.signupModel.mobileNo" name="mobileNo"
+        placeholder="99999-99999">
+    </mat-form-field>
+
+
+    <mat-form-field class="flex">
+      <mat-label class="">Username</mat-label>
+      <input matInput type="text" #username="ngModel" [(ngModel)]="userAuthService.signupModel.username" name="username"
+        placeholder="Username" minlength="4" [ngClass]="{'invalid-textbox' :signUpForm.submitted && !username.valid }">
+      <div *ngIf="signUpForm.submitted && username.errors">
+        <mat-error *ngIf="username.errors.required" class="validation-message">This field is required.</mat-error>
+        <mat-error *ngIf="username.errors.minlength" class="validation-message">Enter atleast 4 characters.</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="flex">
+      <mat-label class="">Password</mat-label>
+      <input matInput type="password" #password="ngModel" [(ngModel)]="userAuthService.signupModel.password"
+        name="password" placeholder="Password" minlength="4"
+        [ngClass]="{'invalid-textbox' :signUpForm.submitted && !password.valid }">
+      <div *ngIf="signUpForm.submitted && password.errors">
+        <mat-error *ngIf="password.errors.required" class="validation-message">This field is required.</mat-error>
+        <mat-error *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</mat-error>
+      </div>
+    </mat-form-field>
+
+    <div class="flex">
+      <button mat-raised-button>Sign up</button>
+    </div>
+  </mat-card>
+
+</form>

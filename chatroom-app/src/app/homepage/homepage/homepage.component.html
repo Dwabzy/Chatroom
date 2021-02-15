@@ -1,0 +1,6 @@
+<homepage-navbar>
+  <div class="main-content">
+    <homepage-login *ngIf="this.activatedRoute.routeConfig?.path === 'login'"></homepage-login>
+    <homepage-signup *ngIf="this.activatedRoute.routeConfig?.path === 'signup'"></homepage-signup>
+  </div>
+</homepage-navbar>

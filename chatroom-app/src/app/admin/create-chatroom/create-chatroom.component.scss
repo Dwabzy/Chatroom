@@ -1,0 +1,93 @@
+@import '../../../styles.scss';
+
+
+button {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+.float-right {
+  float: right;
+}
+
+.box-input-3 {
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  width: 200px;
+  padding: none;
+  border-radius: 10px;
+  // float: right;
+
+
+
+
+  input {
+    height: inherit;
+    width: calc(100% - 5px);
+    border: inherit;
+    border-radius: inherit;
+    padding: 0;
+    padding-left: 5px;
+    color: var(--primary-text);
+    background-color: var(--foreground);
+
+
+    &:focus {
+      outline: none;
+      border: 2px solid var(--menubar);
+      transition: 0.3s linear;
+
+      &~label {
+        color: var(--button);
+        background-color: transparent;
+        z-index: 1;
+        top: calc((-100% - 20px) / 2);
+        left: 0;
+        transition: 0.5s;
+      }
+    }
+  }
+
+  label {
+    position: absolute;
+    line-height: inherit;
+    color: var(--primary-text);
+    padding-left: 5px;
+    left: 10px;
+    top: 0px;
+  }
+}
+
+.name {
+  margin-top: 20px;
+  max-width: 500px;
+  height: 40px;
+  line-height: 40px;
+
+  .title {
+    color: var(--primary-text);
+    width: 50%;
+    font-size: 24px;
+    float: left;
+  }
+}
+
+.settings {
+  clear: both;
+
+  .message-settings {
+    tr {
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+
+select {
+  width: 200px;
+  height: 40px;
+}

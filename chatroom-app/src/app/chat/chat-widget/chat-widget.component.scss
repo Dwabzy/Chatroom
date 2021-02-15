@@ -1,0 +1,215 @@
+@import '../../../styles.scss';
+
+button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+.icon-button {
+  height: inherit;
+  width: inherit;
+  border-radius: inherit;
+
+  .icon {
+    display: block;
+    height: 37.5px;
+    width: 37.5px;
+    margin: auto;
+    padding-top: 5px;
+  }
+}
+
+.widget {
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  background-color: var(--primary);
+
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 100;
+
+  .chat-window {
+    max-height: 600px;
+    max-width: 400px;
+    height: 600px;
+    width: 400px;
+
+    background-color: var(--foreground);
+    box-shadow: 5px 5px 20px black;
+
+    position: absolute;
+    bottom: 75px;
+    right: 10px;
+
+    border-radius: 20px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    transition: max-height 1s, max-width 1s;
+    overflow: hidden;
+
+
+
+    .title-bar {
+      height: 60px;
+      line-height: 60px;
+
+      background-color: var(--menubar);
+      color: var(--text-white);
+
+      padding: 0px 10px;
+      font-size: 20px;
+
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+
+      display: flex;
+
+      .spacer {
+        flex: 1 1 auto;
+      }
+
+      button {
+        background: transparent;
+        outline: none;
+        border: none;
+
+        padding-top: 8px;
+        color: white;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .chat-body {
+      padding: 10px;
+      font-size: 16px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: calc(100% - 100px);
+
+
+      .message-container {
+        display: flex;
+        flex-direction: column;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+
+
+        .media-right {
+          flex: 50%;
+          align-self: flex-end;
+        }
+
+        .media-left {
+          flex: 50%;
+          align-self: flex-start;
+        }
+
+        .sent-message {
+          max-width: 70%;
+          padding: 6px;
+          border-radius: 10px;
+          border-bottom-right-radius: 0;
+          border-top-left-radius: 5px;
+          background-color: var(--primary);
+          color: var(--text-white);
+          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .received-message {
+          padding: 6px;
+          border-radius: 10px;
+          border-bottom-left-radius: 0;
+          border-top-right-radius: 5px;
+          max-width: 70%;
+          background-color: var(--secondary);
+          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+          color: var(--primary-text)
+        }
+
+        .space {
+          height: 10px;
+        }
+
+        .space-2 {
+          height: 3px;
+        }
+
+        .time {
+          font-size: 10px;
+          color: var(--secondary-text);
+        }
+      }
+
+    }
+
+    .text-box {
+      height: 40px;
+      line-height: 40px;
+      width: 100%;
+
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+
+      background-color: var(--secondary);
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+
+      .message-input {
+        width: 80%;
+        height: 100%;
+
+        position: absolute;
+        top: 0;
+
+        border: none;
+        outline: none;
+        padding: 0;
+        padding-left: 10px;
+
+        border-bottom-left-radius: 8px;
+
+        background-color: var(--secondary);
+        color: var(--primary-text);
+      }
+
+      .send-button {
+        position: absolute;
+        right: 0;
+        padding-top: 8px;
+        background: transparent;
+        outline: none;
+        border: none;
+        color: var(--button);
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--foreground);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll);
+}
