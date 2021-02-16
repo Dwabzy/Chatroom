@@ -1,27 +1,17 @@
 [
   {
     "agentId": "75061627-0991-41f9-a966-92ca9f1436b1",
-    "visitorId": "1bf9",
+    "visitorId": "4f60",
     "visitorIp": "60.243.12.98",
     "chatroomName": "Testo",
-    "hasJoinedChat": false,
-    "visitorName": "Visitor-1bf9",
+    "hasJoinedChat": true,
+    "visitorName": "Visitor-4f60",
     "visitorDetails": {},
     "messages": [
       {
         "message": "Hallo",
         "sender": "agent",
-        "time": "2021-02-16 14:43:51"
-      },
-      {
-        "message": "Hai",
-        "sender": "agent",
-        "time": "2021-02-16 14:44:5"
-      },
-      {
-        "message": "Halloooo",
-        "sender": "visitor",
-        "time": "2021-02-16 14:44:10"
+        "time": "2021-02-16 14:52:3"
       }
     ]
   }

@@ -14,9 +14,11 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   toggleChatWindow: boolean = false;
   chatroomName: string = "";
 
+  agentName: string = "Bot";
+
   @Input() messages: Array<any> = [];
 
-  @ViewChild('titleBar')titleBar!: ElementRef;
+  @ViewChild('titleBar') titleBar!: ElementRef;
   @ViewChildren('customerMessage') customerMessages!: QueryList<ElementRef>;
   @ViewChild('chatWindow') chatWindow!: ElementRef;
   @ViewChild('textBox') textBox!: ElementRef;
@@ -39,6 +41,7 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('agent-connected').subscribe((data: any) => {
       console.log(data);
+      this.agentName = data.username;
       localStorage.setItem('agent-details', JSON.stringify(data));
     })
 

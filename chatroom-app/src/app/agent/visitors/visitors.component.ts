@@ -15,7 +15,11 @@ export class VisitorsComponent implements OnInit {
   constructor(private router: Router, private webSocketService: WebSocketService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-
+    this.webSocketService.emit('get-unconnected-visitors-request', "");
+    this.webSocketService.listen('receive-unconnected-visitors-list').subscribe((data: any) => {
+      this.visitorList = data;
+      console.log(data);
+    })
     this.webSocketService.listen('visitor-details').subscribe((data: any) => {
       let visitor = this.visitorList.find(visitorChat => visitorChat.visitorId === data.visitorId);
       console.log(visitor);

@@ -45,11 +45,11 @@ module.exports = (io) => {
                 visitorChat.visitorName = "Visitor-" + visitorId;
 
                 let { firstMessage } = await getChatroomDetails(chatroomName);
-                visitorChat.messages.push({
+                visitorChat.messages = [({
                     message: firstMessage,
                     sender: "agent",
                     time: getTime()
-                })
+                })]
 
 
                 // Push new Visitor Object into the array
@@ -99,6 +99,7 @@ module.exports = (io) => {
             let visitor = jsonObject.find(visitor => visitor.visitorId === visitorId);
             let indexOfVisitor = jsonObject.indexOf(visitor);
             jsonObject[indexOfVisitor].agentId = agentId;
+            jsonObject[indexOfVisitor].hasJoinedChat = true;
 
             // Write updated visitor to file.
             fileWrite(JSON.stringify(jsonObject, null, 2));
@@ -118,6 +119,14 @@ module.exports = (io) => {
             let visitors = jsonObject.filter(visitor => visitor.agentId === agentId);
 
             socket.emit('receive-connected-visitors-list', visitors);
+        });
+
+        socket.on('get-unconnected-visitors-request', async () => {
+            // Get visitor assigned to given agent and emit it to Connected Visitors list.
+            let jsonObject = await fileRead();
+            let visitors = jsonObject.filter(visitor => !visitor.hasJoinedChat);
+
+            socket.emit('receive-unconnected-visitors-list', visitors);
         });
 
         socket.on('get-messages', async visitorId => {
