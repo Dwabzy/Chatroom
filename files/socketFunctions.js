@@ -1,6 +1,7 @@
 var uuid = require('uuid-random');
-var { fileRead, fileWrite, getVisitor, getTime } = require('./utilityFunctions');
+var { fileRead, fileWrite, getVisitor, getTime, getTimeMessage } = require('./utilityFunctions');
 var { getUserDetails } = require('./userAuthFunctions');
+var { getChatroomDetails } = require('./chatroomFunctions');
 
 
 let visitorChat = {
@@ -23,115 +24,149 @@ module.exports = (io) => {
     io.on('connection', async socket => {
         // Get ip of customer
         let ipAddress = socket.handshake.address;
-        ipAddress = "::ffff:60.243.12.97";
+        ipAddress = "::ffff:60.243.12.98";
         ipAddress = ipAddress.slice(7);
-
 
         // Read Messages from JSON file.
         let jsonObject = await fileRead();
-        let visitorId = uuid().slice(0, 4);
-        let visitorName = "Visitor-" + visitorId;
-        let messages = [];
 
+        // Runs when the new connection is a new visitor.
         socket.on('new-visitor', async (chatroomName) => {
             console.log("A visitor connected with IP: ", ipAddress)
             let visitor = getVisitor(ipAddress, chatroomName, jsonObject);
-            let visitorSocketId = socket.id
-            console.log("Socket ID:", socket.id, visitorSocketId);
 
             if (!visitor) {
+
+                // If visitor does not exist in given chatroom, create new visitorInstance and send notification to agents.
+                let visitorId = uuid().slice(0, 4);
                 visitorChat.chatroomName = chatroomName;
                 visitorChat.visitorIp = ipAddress;
                 visitorChat.visitorId = visitorId;
-                visitorChat.visitorName = visitorName
+                visitorChat.visitorName = "Visitor-" + visitorId;
+
+                let { firstMessage } = await getChatroomDetails(chatroomName);
+                visitorChat.messages.push({
+                    message: firstMessage,
+                    sender: "agent",
+                    time: getTime()
+                })
+
 
                 // Push new Visitor Object into the array
                 jsonObject.push(visitorChat);
 
+                // Connect new visitor to chatroom corresponding to their unique ID.
+                socket.join(visitorId)
+
+
                 // Convert array into Json string and write it to file.
                 let jsonString = JSON.stringify(jsonObject, null, 2);
                 fileWrite(jsonString);
+
+                socket.emit('receive-messages', visitorChat.messages);
+
                 // Emit to everyone except the customer that connected.
-                socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName, messages, visitorSocketId });
+                socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName: visitorChat.visitorName, messages: visitorChat.messages, visitorId });
             } else {
+                // If visitor already exists, Send existig visitor details to agents.
                 console.log("Visitor already exists");
-                let { ipAddress, chatroomName, visitorName, messages } = visitor;
-                if (!visitor.hasJoinedChat)
-                    socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName, messages, visitorSocketId });
-                else {
-                    socket.broadcast.emit('new-visitor-socket-id', { visitorName, visitorSocketId });
-                }
+                let { ipAddress, chatroomName, visitorName, messages, visitorId } = visitor;
+
+                // Connect new visitor to chatroom corresponding to their unique ID.
+                socket.join(visitorId)
+
+                // Emit to everyone except the customer that connected.
+                for (let i = 0; i < messages.length; i++)
+                    messages[i].time = getTimeMessage(messages[i].time);
+
+
+
+                socket.emit('receive-messages', messages);
+                socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName, messages, visitorId });
             }
-
         })
 
-        socket.on('get-unconnected-visitors-request', () => {
-            let unconnectedVisitors = jsonObject.filter(visitorChat => !visitorChat.hasJoinedChat)
-            socket.emit('send-unconnnected-visitors', unconnectedVisitors);
-        })
+        // When agent connects to visitor.
+        socket.on('assign-agent', async data => {
+            let { username, visitorId, visitorName, chatroomName, messages } = data;
 
-        socket.on('get-connected-visitors-request', async (username) => {
-            let userDetails = await getUserDetails(username);
-            let agentId = userDetails.userId;
-            let connectedVisitors = jsonObject.filter(visitorChat => visitorChat.hasJoinedChat && visitorChat.agentId === agentId);
-            socket.emit('send-connnected-visitors', connectedVisitors);
-        })
-
-        socket.on('connect-to-visitor', async (data) => {
-            let { username, visitorId, visitorSocketId, agentSocketId } = data;
-            // Get Agent ID from database
+            // Get id of agent.
             let userDetails = await getUserDetails(username);
             let agentId = userDetails.userId;
 
-            // Get all messages from json file and find the visitor that the agent wants to chat to.
+            // Update visitor in file with agentId.
             let jsonObject = await fileRead();
+            let visitor = jsonObject.find(visitor => visitor.visitorId === visitorId);
+            let indexOfVisitor = jsonObject.indexOf(visitor);
+            jsonObject[indexOfVisitor].agentId = agentId;
 
-            let visitor = jsonObject.find(visitorChat => visitorId === visitorChat.visitorId)
-            let index = jsonObject.indexOf(visitor);
-
-            // Remove Visitor from visitorsList as they have already been assigned an agent.
-            jsonObject[index].hasJoinedChat = true;
-            jsonObject[index].agentId = agentId;
-
-            // Finally, write to file.
+            // Write updated visitor to file.
             fileWrite(JSON.stringify(jsonObject, null, 2));
-            console.log("VisitorId:", visitorId);
-            socket.to(visitorSocketId).emit('connected-message', { agentId, visitorId, visitorSocketId, agentSocketId });
+
+
+            socket.join(visitorId);
+            socket.to(visitorId).emit('agent-connected', { username, agentId, visitorId, visitorName, chatroomName })
+        })
+
+        socket.on('get-connected-visitors-request', async username => {
+            // Get id of agent.
+            let userDetails = await getUserDetails(username);
+            let agentId = userDetails.userId;
+
+            // Get visitor assigned to given agent and emit it to Connected Visitors list.
+            let jsonObject = await fileRead();
+            let visitors = jsonObject.filter(visitor => visitor.agentId === agentId);
+
+            socket.emit('receive-connected-visitors-list', visitors);
         });
 
-
-
-        socket.on('agent-message', async data => {
-            let { message, chatDetails } = data;
-            let { visitorSocketId, agentSocketId, visitorId } = chatDetails;
-            console.log("Socket 2:", visitorSocketId, socket.id, agentSocketId);
-            let sender = "agent";
-            let time = getTime();
-            socket.to(visitorSocketId).emit('receive-agent-message', { message, sender, time })
-
-            // Write messages to file.
+        socket.on('get-messages', async visitorId => {
             let jsonObject = await fileRead();
-            let visitor = jsonObject.find(visitorChat => visitorId === visitorChat.visitorId);
-            let index = jsonObject.indexOf(visitor);
-            jsonObject[index].messages.push({ message, sender, time });
+            let visitor = jsonObject.find(visitor => visitor.visitorId === visitorId);
+            let messages = visitor.messages;
+
+            for (let i = 0; i < messages.length; i++)
+                messages[i].time = getTimeMessage(messages[i].time);
+
+            socket.emit('receive-messages', messages);
+        });
+
+        socket.on('send-message', async data => {
+            let { message, sender, visitorId } = data;
+
+            // Create message object
+            let messageObject = {
+                message,
+                sender,
+                time: getTime()
+            }
+
+            // Read file and find the chat of given visitor Id.
+            let jsonObject = await fileRead();
+            let visitor = jsonObject.find(visitor => visitor.visitorId === visitorId);
+            let indexOfVisitor = jsonObject.indexOf(visitor);
+
+            // Connect to chatroom again, just in case.
+            socket.join(visitorId);
+            var users = io.sockets.adapter.rooms.get(visitorId);
+            console.log(users);
+
+            // Push the message Object onto the file and write it.
+            jsonObject[indexOfVisitor].messages.push(messageObject);
             fileWrite(JSON.stringify(jsonObject, null, 2));
+
+            messageObject.time = getTimeMessage(messageObject.time);
+            // Use IO to send to all connections in the chatroom.
+            io.to(visitorId).emit('receive-message', messageObject);
         })
 
-        socket.on('visitor-message', async data => {
-            let { message, chatDetails } = data;
-            let { visitorSocketId, agentSocketId, visitorId } = chatDetails;
-            console.log("Socket 2:", visitorSocketId, socket.id, agentSocketId);
-            let sender = "visitor";
-            let time = getTime();
-            socket.to(agentSocketId).emit('receive-visitor-message', { message, sender, time })
+        socket.on('agent-join-room', (visitorId) => {
 
-            // Write messages to file.
-            let jsonObject = await fileRead();
-            let visitor = jsonObject.find(visitorChat => visitorId === visitorChat.visitorId);
-            let index = jsonObject.indexOf(visitor);
-            jsonObject[index].messages.push({ message, sender, time });
-            fileWrite(JSON.stringify(jsonObject, null, 2));
+            socket.join(visitorId)
+            var users = io.sockets.adapter.rooms.get(visitorId);
+            console.log(users);
         })
+
 
         // Runs when client disconnects
         socket.on('disconnect', () => {

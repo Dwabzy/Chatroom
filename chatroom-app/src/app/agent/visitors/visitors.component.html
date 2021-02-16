@@ -1,6 +1,6 @@
 <div class="visitor-list">
   <div *ngFor="let visitor of visitorList">
-    {{visitor.visitorName}} {{visitor.visitorId}}
-    <button type="button" (click)="connectToVisitor(visitor.visitorId, visitor.visitorSocketId)"> Chat </button>
+    {{visitor.visitorName}} {{visitor.visitorId}} {{visitor.chatroomName}}
+    <button type="button" (click)="connectToVisitor(visitor)"> Chat </button>
   </div>
 </div>

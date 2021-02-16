@@ -85,7 +85,10 @@ exports.getChatroomDetails = (chatroomName) => {
                 let responseData = {
                     chatroomId: results[0].chatroom_id,
                     chatroomName: results[0].chatroom_name,
-                    description: results[0].descrption,
+                    firstMessage: results[0].first_message,
+                    onlineMessage: results[0].online_message,
+                    onlineMessage: results[0].online_message,
+                    onlineMessage: results[0].online_message
                 }
                 resolve(responseData);
             } else resolve(false)
@@ -100,20 +103,18 @@ exports.getChatroomFullDetails = (chatroomId) => {
         connection.query(sql, [chatroomId], async (err, results) => {
             if (err) console.log(err);
             else if (results.length != 0) {
-                let data = [];
                 let responseData = {
                     chatroomId: results[0].chatroom_id,
                     chatroomName: results[0].chatroom_name,
                     description: results[0].descrption,
                     firstMessage: results[0].first_message,
                     onlineMessage: results[0].online_message,
-                    offlineMessage: results[0].offline_message
+                    offlineMessage: results[0].offline_message,
+                    idleMessage: results[0].idle_message,
+                    entityList: results[0].entityList,
+                    chatboxTheme: results[0].chatbox_theme,
                 }
-
-                data.push(responseData);
-                let visitor = await this.getChatroomVisitor(chatroomId);
-                data.push(visitor);
-                resolve(data);
+                resolve(responseData);
             } else resolve(false)
         });
     });

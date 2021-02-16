@@ -45,7 +45,8 @@
         <div #customerMessage *ngIf="message.sender==='visitor'" class="sent-message media-right">
           {{message.message}}
         </div>
-        <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-right">{{message.time}}
+        <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-right">
+          {{message.time}}
         </div>
         <div *ngIf="!message.displayTime" class="space-2"></div>
         <div *ngIf="message.displayTime" class="space"></div>

@@ -9,7 +9,7 @@
   </div>
   <div id="contact-list" class="contact-list" [class.drop-down]="displayDropdownContacts">
     <div *ngFor="let visitor of visitorList">
-      <button class="contact">{{visitor.visitorName}}</button>
+      <button (click)="selectVisitor(visitor)" class="contact">{{visitor.visitorName}}</button>
     </div>
   </div>
   <!-- End of Sidebar -->
@@ -21,7 +21,8 @@
       <div *ngIf="message.sender==='agent'" class="sent-message media-right">
         {{message.message}}
       </div>
-      <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">{{message.time}}
+      <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">
+        {{message.time}} time
       </div>
       <div *ngIf="!message.displayTime" class="space-2"></div>
       <div *ngIf="message.displayTime" class="space"></div>
