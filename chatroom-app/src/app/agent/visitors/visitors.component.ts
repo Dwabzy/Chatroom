@@ -11,7 +11,7 @@ export class VisitorsComponent implements OnInit {
 
   @Input() visitorList: Array<any> = [];
 
-  
+
   constructor(private router: Router, private webSocketService: WebSocketService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -24,8 +24,11 @@ export class VisitorsComponent implements OnInit {
       let visitor = this.visitorList.find(visitorChat => visitorChat.visitorId === data.visitorId);
       console.log(visitor);
       // If visitor is not part of the existing visitor list, push it into the list.
-      if(!this.visitorList.includes(visitor))
+      if (!this.visitorList.includes(visitor)) {
         this.visitorList.push(data);
+        let notificaiton = new Audio('../../../assets/sounds/KnockKnock.mp3')
+        notificaiton.play();
+      }
     })
   }
 
@@ -38,7 +41,7 @@ export class VisitorsComponent implements OnInit {
     this.visitorList.splice(indexOfVisitor, 1);
 
     // Emit details along with username to assign-agent.
-    this.webSocketService.emit('assign-agent', {username, visitorId, visitorName, chatroomName, messages})
+    this.webSocketService.emit('assign-agent', { username, visitorId, visitorName, chatroomName, messages })
   }
 
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { NgForm } from '@angular/forms';
 import { WebSocketService } from 'src/app/services/web-socket.service';
+import { TimeService } from 'src/app/services/time.service';
 
 
 @Component({
@@ -21,29 +22,31 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dropDownButton') dropDownButton!: ElementRef;
   @ViewChild('contactList') contactList!: ElementRef;
-  @ViewChild('agentMessage') agentMesage!: ElementRef;
+  @ViewChild('agentMessage') agentMessage!: ElementRef;
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
 
 
   constructor(
     public activatedRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
-    private webSocketService: WebSocketService) {
-      this.username = this.activatedRoute.snapshot.params.username;
-     }
-  
-  ngAfterViewInit(): void {
-    
+    private webSocketService: WebSocketService,
+    private timeService: TimeService) {
+    this.username = this.activatedRoute.snapshot.params.username;
   }
- 
+
+  ngAfterViewInit(): void {
+
+  }
+
   ngOnInit(): void {
     this.theme = localStorage.getItem('theme') === "Dark" ? 'dark-theme' : 'light-theme';
     this.breakpointObserver.observe([
       '(max-width: 618px)',
-    ]).subscribe( (state: BreakpointState) => {
+    ]).subscribe((state: BreakpointState) => {
       this.displayDropdownContacts = state.matches;
     });
 
-    
+
     this.webSocketService.emit('get-connected-visitors-request', this.username);
 
     this.webSocketService.listen('receive-connected-visitors-list').subscribe((data: any) => {
@@ -56,14 +59,41 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('receive-message').subscribe((data: any) => {
       this.messages.push(data);
-      console.log(data);
+
+      let currentMessageIndex = this.messages.length - 1;
+      let previousMessageIndex = currentMessageIndex - 1;
+      this.messages[previousMessageIndex].timeMessage = this.timeService.getTimeMessage(this.messages[previousMessageIndex].time);
+
+      let currentMessageSender = this.messages[currentMessageIndex].sender;
+      let previousMessageSender = this.messages[previousMessageIndex].sender;
+
+      let timeDifference = 0;
+      timeDifference = Math.floor((
+        new Date(this.messages[currentMessageIndex].time).getTime() -
+        new Date(this.messages[previousMessageIndex].time).getTime()) / 1000 / 60);
+
+      this.messages[previousMessageIndex].displayTime = !(currentMessageSender === previousMessageSender && timeDifference < 5);
+
+      setTimeout(() => {
+        if (currentMessageIndex === this.messages.length - 1) {
+          this.messages[currentMessageIndex].timeMessage = "1 minute ago";
+        }
+      }, 60000)
+      setTimeout(() => {
+        if (currentMessageIndex === this.messages.length - 1) {
+          this.messages[currentMessageIndex].timeMessage = this.timeService.getTimeMessage(this.messages[previousMessageIndex].time);
+        }
+      }, 120000)
+
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
     })
 
 
 
     this.webSocketService.listen('receive-messages').subscribe((data: any) => {
-      console.log("Received Message:", data);
       this.messages = data;
+      // Scroll to the bottom of the container when new messages are received.
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
     });
   }
 
@@ -77,12 +107,11 @@ export class ChatComponent implements OnInit, AfterViewInit {
   sendMessage = (): void => {
 
     // Get Message from htmlElement
-    let message = this.agentMesage.nativeElement.value;
+    let message = this.agentMessage.nativeElement.value;
     let visitor = this.selectedVisitor;
     let sender = "agent";
 
     this.webSocketService.emit('send-message', { message, sender, visitorId: visitor.visitorId });
-    this.webSocketService.emit('get-messages', visitor.visitorId);
   }
 
 

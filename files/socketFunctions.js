@@ -63,10 +63,13 @@ module.exports = (io) => {
                 let jsonString = JSON.stringify(jsonObject, null, 2);
                 fileWrite(jsonString);
 
+                visitorChat.messages[0].displayTime = true;
+                visitorChat.messages[0].timeMessage = getTimeMessage(visitorChat.messages[0].time, true);
+
                 socket.emit('receive-messages', visitorChat.messages);
 
                 // Emit to everyone except the customer that connected.
-                socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName: visitorChat.visitorName, messages: visitorChat.messages, visitorId });
+                io.emit('visitor-details', { ipAddress, chatroomName, visitorName: visitorChat.visitorName, messages: visitorChat.messages, visitorId });
             } else {
                 // If visitor already exists, Send existig visitor details to agents.
                 console.log("Visitor already exists");
@@ -75,14 +78,31 @@ module.exports = (io) => {
                 // Connect new visitor to chatroom corresponding to their unique ID.
                 socket.join(visitorId)
 
-                // Emit to everyone except the customer that connected.
-                for (let i = 0; i < messages.length; i++)
-                    messages[i].time = getTimeMessage(messages[i].time);
 
+                for (let i = 0; i < messages.length; i++) {
+                    let date = new Date(messages[i].time);
+
+                    // Get the string to be displayed under the message as time sent.
+                    messages[i].timeMessage = getTimeMessage(messages[i].time, (i + 1) === messages.length);
+                    messages[i].displayTime = true;
+
+                    // Algorithm to display the time.
+                    let currentSender = messages[i].sender;
+                    let timeDifference = 0;
+                    if (messages[i + 1]) {
+                        timeDifference = Math.floor((new Date(messages[i + 1].time).getTime() - date.getTime()) / 60 / 1000);
+                    }
+
+                    /* Display Time only if the time difference between consecutive messages is greater than 5 minutes or if the sender of 2 consecutive
+                    messages is different */
+                    if (messages[i + 1] && currentSender === messages[i + 1].sender && timeDifference < 5) {
+                        messages[i].displayTime = false;
+                    }
+                }
 
 
                 socket.emit('receive-messages', messages);
-                socket.broadcast.emit('visitor-details', { ipAddress, chatroomName, visitorName, messages, visitorId });
+                io.emit('visitor-details', { ipAddress, chatroomName, visitorName, messages, visitorId });
             }
         })
 
@@ -134,9 +154,27 @@ module.exports = (io) => {
             let visitor = jsonObject.find(visitor => visitor.visitorId === visitorId);
             let messages = visitor.messages;
 
-            for (let i = 0; i < messages.length; i++)
-                messages[i].time = getTimeMessage(messages[i].time);
+            for (let i = 0; i < messages.length; i++) {
+                let date = new Date(messages[i].time);
 
+                // Get the string to be displayed under the message as time sent.
+                messages[i].timeMessage = getTimeMessage(messages[i].time, (i + 1) === messages.length);
+                messages[i].displayTime = true;
+
+                // Algorithm to display the time.
+                let currentSender = messages[i].sender;
+                let timeDifference = 0;
+                if (messages[i + 1]) {
+                    timeDifference = Math.floor((new Date(messages[i + 1].time).getTime() - date.getTime()) / 60 / 1000);
+                }
+
+                /* Display Time only if the time difference between consecutive messages is greater than 5 minutes or if the sender of 2 consecutive
+                messages is different */
+                if (messages[i + 1] && currentSender === messages[i + 1].sender && timeDifference < 5) {
+                    messages[i].displayTime = false;
+
+                }
+            }
             socket.emit('receive-messages', messages);
         });
 
@@ -147,7 +185,7 @@ module.exports = (io) => {
             let messageObject = {
                 message,
                 sender,
-                time: getTime()
+                time: getTime(),
             }
 
             // Read file and find the chat of given visitor Id.
@@ -164,7 +202,8 @@ module.exports = (io) => {
             jsonObject[indexOfVisitor].messages.push(messageObject);
             fileWrite(JSON.stringify(jsonObject, null, 2));
 
-            messageObject.time = getTimeMessage(messageObject.time);
+            messageObject.timeMessage = getTimeMessage(messageObject.time, true);
+            messageObject.displayTime = true;
             // Use IO to send to all connections in the chatroom.
             io.to(visitorId).emit('receive-message', messageObject);
         })

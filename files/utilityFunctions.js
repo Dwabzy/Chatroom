@@ -11,8 +11,8 @@ exports.getTime = () => {
     return yyyy + '-' + mm + '-' + dd + " " + hour + ':' + minute + ':' + seconds;
 }
 
-exports.getTimeMessage = (dateTime) => {
-    let date = new Date(dateTime);
+exports.getTimeMessage = (date, isLastMessage) => {
+    date = new Date(date);
     let time = (new Date().getTime() - date.getTime()) / 1000;
     // Algorithm to display time
     let localDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear().toLocaleString().slice(3);
@@ -32,17 +32,26 @@ exports.getTimeMessage = (dateTime) => {
     let minutes = Math.floor(time / 60) % 60;
     let hours = Math.floor(time / 3600) % 24;
     let days = Math.floor(time / (24 * 3600)) % 30;
-    if (days > 0) {
-        return localDate + " " + localTime;
-    }
-    else if (hours > 0 || minutes > 1) {
-        return localTime;
-    }
-    else if (minutes === 1) {
-        return minutes + " minute ago"
-    }
-    else {
-        return "Just now";
+    if (isLastMessage) {
+        if (days > 0) {
+            return localDate + " " + localTime;
+        }
+        else if (hours > 0 || minutes > 1) {
+            return localTime;
+        }
+        else if (minutes === 1) {
+            return minutes + " minute ago"
+        }
+        else {
+            return "Just now";
+        }
+    } else {
+        if (days > 0) {
+            return localDate + " " + localTime;
+        }
+        else if (hours > 0 || minutes > 1) {
+            return localTime;
+        }
     }
 }
 

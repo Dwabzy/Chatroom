@@ -91,7 +91,7 @@ button {
       overflow-y: scroll;
       overflow-x: hidden;
       height: calc(100% - 100px);
-
+      margin-bottom: 40px;
 
       .message-container {
         display: flex;
@@ -137,13 +137,17 @@ button {
         }
 
         .space-2 {
-          height: 3px;
+          height: 5px;
         }
 
         .time {
           font-size: 10px;
           color: var(--secondary-text);
         }
+      }
+
+      .space-3 {
+        height: 20px;
       }
 
     }

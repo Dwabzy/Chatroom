@@ -3,11 +3,11 @@
   <div *ngIf="displayDropdownContacts" id="collapsible" class="collapsible">
     <span class="text">Visitor</span>
     <div class="spacer"></div>
-    <button (click)="toggleDropDown()">
-      <mat-icon #dropDownButton class="dropdown-button"> arrow_drop_down </mat-icon>
+    <button #dropDownButton (click)="toggleDropDown()">
+      <mat-icon class="dropdown-button"> arrow_drop_down </mat-icon>
     </button>
   </div>
-  <div id="contact-list" class="contact-list" [class.drop-down]="displayDropdownContacts">
+  <div #contactList id="contact-list" class="contact-list" [class.drop-down]="displayDropdownContacts">
     <div *ngFor="let visitor of visitorList">
       <button (click)="selectVisitor(visitor)" class="contact">{{visitor.visitorName}}</button>
     </div>
@@ -16,26 +16,26 @@
 
   <!-- Message Box -->
   <div class="message-window">
-    <div *ngFor="let message of messages; let i = index" class="message-container">
+    <div #messageContainer class="message-container">
+      <div *ngFor="let message of messages; let i = index" class="message">
 
-      <div *ngIf="message.sender==='agent'" class="sent-message media-right">
-        {{message.message}}
-      </div>
-      <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">
-        {{message.time}} time
-      </div>
-      <div *ngIf="!message.displayTime" class="space-2"></div>
-      <div *ngIf="message.displayTime" class="space"></div>
+        <div *ngIf="message.sender==='agent'" class="sent-message media-right">
+          {{message.message}}
+        </div>
+        <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">
+          {{message.timeMessage}}
+        </div>
 
-      <div *ngIf="message.sender==='visitor'" class="received-message media-left">
-        {{message.message}}
-      </div>
-      <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-left">
-        {{message.time}}</div>
-      <div *ngIf="!message.displayTime" class="space-2"></div>
-      <div *ngIf="message.displayTime" class="space"></div>
 
+        <div *ngIf="message.sender==='visitor'" class="received-message media-left">
+          {{message.message}}
+        </div>
+        <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-left">
+          {{message.timeMessage}}</div>
+        <div class="space-2"></div>
+      </div>
     </div>
+    <div class="spacer"></div>
     <div class="text-box">
       <form (ngSubmit)="sendMessage()">
         <input #agentMessage type="text" placeholder="Type your message" />

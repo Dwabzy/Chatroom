@@ -46,21 +46,17 @@
           {{message.message}}
         </div>
         <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-right">
-          {{message.time}}
+          {{message.timeMessage}}
         </div>
-        <div *ngIf="!message.displayTime" class="space-2"></div>
-        <div *ngIf="message.displayTime" class="space"></div>
 
         <div *ngIf="message.sender==='agent'" class="received-message media-left">
           {{message.message}}
         </div>
         <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-left">
-          {{message.time}}</div>
-        <div *ngIf="!message.displayTime" class="space-2"></div>
-        <div *ngIf="message.displayTime" class="space"></div>
-
+          {{message.timeMessage}}</div>
+        <div class="space-2"></div>
       </div>
-
+      <div class="space-3"></div>
       <div #textBox class="text-box">
         <input #visitorMessage class="message-input" placeholder="Enter your text" />
         <button (click)="sendMessage()" class="send-button">

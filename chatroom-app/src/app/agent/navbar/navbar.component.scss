@@ -111,6 +111,7 @@ button {
     .content {
       float: right;
       width: calc(100% - 250px);
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .sidenav {
@@ -118,7 +119,6 @@ button {
       width: 250px;
       float: left;
       background-color: var(--foreground);
-      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
       z-index: 100;
 
       .sidenav-list {
