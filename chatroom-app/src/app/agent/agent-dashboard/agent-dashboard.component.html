@@ -1,4 +1,4 @@
-<agent-navbar>
+<agent-navbar [visitorList]="visitorList">
   <div class="main-content">
     <agent-chat *ngIf="this.activatedRoute.routeConfig?.path === 'agent-dashboard/:username/chat'">
     </agent-chat>

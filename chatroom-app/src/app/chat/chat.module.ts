@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatWidgetComponent } from './chat-widget/chat-widget.component';
 import { MaterialModule } from '../material/material.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -9,7 +10,8 @@ import { MaterialModule } from '../material/material.module';
   declarations: [ChatWidgetComponent],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ],
   exports: [ChatWidgetComponent]
 })

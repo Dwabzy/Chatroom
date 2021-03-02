@@ -25,6 +25,8 @@ exports.getTimeMessage = (date, isLastMessage) => {
 
     if (hour < 12)
         localTime = hour + ":" + minute + " am";
+    else if (hour === 12)
+        localTime = hour + ':' + minute + " pm";
     else
         localTime = (hour % 12) + ":" + minute + " pm";
     // let seconds = Math.floor(time % 60);
@@ -53,23 +55,4 @@ exports.getTimeMessage = (date, isLastMessage) => {
             return localTime;
         }
     }
-}
-
-exports.fileRead = () => {
-    return new Promise(resolve => {
-        file.readFile('./files/messages.json', (err, results) => {
-            if (err) console.log(err);
-            resolve(JSON.parse(results));
-        })
-    })
-}
-
-exports.fileWrite = (jsonString) => {
-    file.writeFile('./files/messages.json', jsonString, (err) => {
-        if (err) console.log(err);
-    })
-}
-
-exports.getVisitor = (ipAddress, chatroomName, jsonObject) => {
-    return jsonObject.find(visitorChat => ipAddress === visitorChat.visitorIp && chatroomName === visitorChat.chatroomName);
 }

@@ -36,6 +36,8 @@ html,
 body {
   --background: #dddddd;
   --primary: #1e88e5;
+  --accent: #4527a0;
+
   --menubar: #1e88e5;
   --secondary: #eeeeee;
   --foreground: #ffffff;
@@ -46,11 +48,16 @@ body {
   --list-hover: #dddddd;
   --button-hover: #3794e6;
   --scroll: #1e88e5;
+
+  --list-item-odd: #ffffff;
+  --list-item-even: #eeeeee;
+
 }
 
 body[data-theme='dark'] {
   --background: #121212;
   --primary: #135a97;
+  --accent: #512da8;
   --menubar: #313131;
   --secondary: #2c2c2c;
   --foreground: #1f1f1f;
@@ -60,6 +67,9 @@ body[data-theme='dark'] {
   --list-hover: #3b3b3b;
   --button-hover: #3b3b3b;
   --scroll: #262626;
+
+  --list-item-odd: #373737;
+  --list-item-even: #494949;
 }
 
 body {

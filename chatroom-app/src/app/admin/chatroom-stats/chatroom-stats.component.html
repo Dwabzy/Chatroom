@@ -1,0 +1,19 @@
+<div class="statistics">
+  <div class="heading">
+    <div class="column"> Chatroom Name </div>
+    <div class="column"> Visitor Id</div>
+    <div class="column"> Visitor Name</div>
+    <div class="column"> View Chat</div>
+    <div class="column"> Visitor Details</div>
+    <div class="column"> Verified</div>
+  </div>
+
+  <div class="visitor" *ngFor="let visitor of visitorDetails">
+    <div class="column"> {{visitor.chatroomName}} </div>
+    <div class="column"> {{visitor.visitorId}} </div>
+    <div class="column"> {{visitor.visitorName}} </div>
+    <div class="column"> <button>View Chat</button></div>
+    <div class="column"> <button>View Details</button> </div>
+    <div class="column"> Tick </div>
+  </div>
+</div>

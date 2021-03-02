@@ -16,12 +16,12 @@ const routes: Routes = [
   { path: 'admin-dashboard/:username', component: AdminDashboardComponent },
   { path: 'admin-dashboard/:username/create-chatroom', component: AdminDashboardComponent },
   { path: 'admin-dashboard/:username/chatrooms', component: AdminDashboardComponent },
-  { path: 'chat/:chatroomName', component: ChatWidgetComponent}
-  
+  { path: 'admin-dashboard/:username/chat-stats', component: AdminDashboardComponent },
+  { path: 'chat/:chatroomName', component: ChatWidgetComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), HomepageModule],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }), HomepageModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

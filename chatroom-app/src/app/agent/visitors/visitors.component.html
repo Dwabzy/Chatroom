@@ -1,6 +1,8 @@
 <div class="visitor-list">
-  <div *ngFor="let visitor of visitorList">
-    {{visitor.visitorName}} {{visitor.visitorId}} {{visitor.chatroomName}}
+  <div *ngFor="let visitor of visitorList" class="visitor">
+    <div class="visitor-info name"><span class="label">Visitor's Name:</span>{{visitor.visitorName}}</div>
+    <div class="visitor-info"><span class="label">Visitor Id:</span>{{visitor.visitorId}}</div>
+    <div class="visitor-info"><span class="label">Chatroom Name:</span>{{visitor.chatroomName}}</div>
     <button type="button" (click)="connectToVisitor(visitor)"> Chat </button>
   </div>
 </div>

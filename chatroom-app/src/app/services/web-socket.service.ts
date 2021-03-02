@@ -10,7 +10,7 @@ export class WebSocketService {
   socket: any;
   readonly uri: string = "ws://localhost:5000";
 
-  constructor() { 
+  constructor() {
     this.socket = io(this.uri);
   }
 
@@ -24,5 +24,5 @@ export class WebSocketService {
 
   emit(eventName: string, data: any) {
     this.socket.emit(eventName, data);
-  } 
+  }
 }

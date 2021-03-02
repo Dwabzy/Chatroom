@@ -109,5 +109,19 @@ exports.getUserId = (chatroomId, ipAddress, visitorName) => {
     });
 }
 
+exports.getAgentName = (agentId) => {
+    let sql = 'Select firstname from user_auth where user_id=?';
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [agentId], async (err, results) => {
+            if (err) console.log(err);
+            else if (results.length != 0) {
+                resolve(results[0].firstname);
+            } else {
+                resolve(undefined);
+            }
+        });
+    });
+}
+
 exports.module = {}
 

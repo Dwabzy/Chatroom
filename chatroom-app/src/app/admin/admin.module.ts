@@ -7,11 +7,12 @@ import { CreateChatroomComponent } from './create-chatroom/create-chatroom.compo
 import { ChatModule } from '../chat/chat.module';
 import { FormsModule } from '@angular/forms';
 import { DisplayChatroomsComponent } from './display-chatrooms/display-chatrooms.component';
+import { ChatroomStatsComponent } from './chatroom-stats/chatroom-stats.component';
 
 
 
 @NgModule({
-  declarations: [AdminDashboardComponent, NavbarComponent, CreateChatroomComponent, DisplayChatroomsComponent],
+  declarations: [AdminDashboardComponent, NavbarComponent, CreateChatroomComponent, DisplayChatroomsComponent, ChatroomStatsComponent],
   imports: [
     CommonModule,
     MaterialModule,

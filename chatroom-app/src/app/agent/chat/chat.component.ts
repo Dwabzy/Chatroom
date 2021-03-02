@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { NgForm } from '@angular/forms';
@@ -85,17 +85,20 @@ export class ChatComponent implements OnInit, AfterViewInit {
         }
       }, 120000)
 
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      setTimeout(() => { this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight; });
     })
+
 
 
 
     this.webSocketService.listen('receive-messages').subscribe((data: any) => {
       this.messages = data;
       // Scroll to the bottom of the container when new messages are received.
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      setTimeout(() => { this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight; });
     });
   }
+
+
 
   selectVisitor = (visitor: any): void => {
     this.selectedVisitor = visitor;
@@ -108,10 +111,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     // Get Message from htmlElement
     let message = this.agentMessage.nativeElement.value;
-    let visitor = this.selectedVisitor;
-    let sender = "agent";
+    if (message.trim() != '') {
+      let visitor = this.selectedVisitor;
+      let sender = "agent";
 
-    this.webSocketService.emit('send-message', { message, sender, visitorId: visitor.visitorId });
+      this.webSocketService.emit('send-message', { message, sender, visitorId: visitor.visitorId });
+    }
+
+    // Empty input field after sending message.
+    this.agentMessage.nativeElement.value = "";
   }
 
 

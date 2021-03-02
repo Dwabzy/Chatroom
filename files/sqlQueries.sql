@@ -30,4 +30,25 @@ CREATE TABLE chatroom
     lastModified datetime
 );
 
+CREATE TABLE visitor_details
+(
+    assigned_agent_id varchar(40),
+    visitor_id varchar(40),
+    visitor_ip varchar(16),
+    chatroom_name varchar(30),
+    has_joined_chat boolean,
+    visitor_name varchar(50),
+    visitor_details varchar(300),
+    online boolean
+);
+
+CREATE TABLE chat
+(
+    agent_id varchar(40),
+    visitor_id varchar(40),
+    sender varchar(40),
+    message varchar(500),
+    time_sent datetime
+);
+
 

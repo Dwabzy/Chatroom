@@ -4,5 +4,7 @@
     </create-chatroom>
     <display-chatrooms *ngIf="this.activatedRoute.routeConfig?.path === 'admin-dashboard/:username/chatrooms'">
     </display-chatrooms>
+    <chatroom-stats *ngIf="this.activatedRoute.routeConfig?.path === 'admin-dashboard/:username/chat-stats'">
+    </chatroom-stats>
   </div>
 </admin-navbar>

@@ -56,12 +56,13 @@
           {{message.timeMessage}}</div>
         <div class="space-2"></div>
       </div>
-      <div class="space-3"></div>
-      <div #textBox class="text-box">
-        <input #visitorMessage class="message-input" placeholder="Enter your text" />
-        <button (click)="sendMessage()" class="send-button">
-          <mat-icon> send </mat-icon>
-        </button>
-      </div>
+      <form (ngSubmit)="sendMessage()">
+        <div #textBox class="text-box">
+          <input #visitorMessage class="message-input" placeholder="Enter your text" />
+          <button (click)="sendMessage()" class="send-button">
+            <mat-icon> send </mat-icon>
+          </button>
+        </div>
+      </form>
     </div>
   </div>

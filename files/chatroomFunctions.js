@@ -76,6 +76,19 @@ exports.getChatrooms = async (chatroomId) => {
     });
 }
 
+exports.displayChatrooms = async () => {
+    let sql = 'Select * from chatroom;';
+    return new Promise((resolve, reject) => {
+        connection.query(sql, (err, results) => {
+            if (err) console.log(err);
+            else if (results.length != 0) {
+                resolve(results);
+            } else resolve(false)
+        });
+    });
+}
+
+
 exports.getChatroomDetails = (chatroomName) => {
     let sql = 'Select * from chatroom where chatroom_name=?';
     return new Promise(resolve => {
@@ -119,3 +132,6 @@ exports.getChatroomFullDetails = (chatroomId) => {
         });
     });
 }
+
+
+

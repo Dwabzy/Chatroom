@@ -15,25 +15,13 @@ export class VisitorsComponent implements OnInit {
   constructor(private router: Router, private webSocketService: WebSocketService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.webSocketService.emit('get-unconnected-visitors-request', "");
-    this.webSocketService.listen('receive-unconnected-visitors-list').subscribe((data: any) => {
-      this.visitorList = data;
-      console.log(data);
-    })
-    this.webSocketService.listen('visitor-details').subscribe((data: any) => {
-      let visitor = this.visitorList.find(visitorChat => visitorChat.visitorId === data.visitorId);
-      console.log(visitor);
-      // If visitor is not part of the existing visitor list, push it into the list.
-      if (!this.visitorList.includes(visitor)) {
-        this.visitorList.push(data);
-        let notificaiton = new Audio('../../../assets/sounds/KnockKnock.mp3')
-        notificaiton.play();
-      }
-    })
+
+
   }
 
   connectToVisitor = (visitor: any): void => {
-    let { visitorId, visitorName, chatroomName, messages } = visitor;
+    let { visitorId, visitorName, chatroomName } = visitor;
+    let messages = visitor.messages;
     let username = this.activatedRoute.snapshot.params.username;
 
     // Removed assigned Visitor from visitorList.
@@ -41,7 +29,13 @@ export class VisitorsComponent implements OnInit {
     this.visitorList.splice(indexOfVisitor, 1);
 
     // Emit details along with username to assign-agent.
-    this.webSocketService.emit('assign-agent', { username, visitorId, visitorName, chatroomName, messages })
+    this.webSocketService.emit('assign-agent', {
+      username,
+      visitorId,
+      visitorName,
+      chatroomName,
+      messages
+    })
   }
 
 }

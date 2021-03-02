@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-interface Chatroom{
+interface Chatroom {
   username: string;
   chatroomName: string;
   firstMessage: string;
@@ -12,10 +12,10 @@ interface Chatroom{
   entityList: {
     list: Array<string>
   };
-  chatboxTheme: object; 
+  chatboxTheme: object;
 }
 
-interface Theme{
+interface Theme {
   titlebarColor: string;
   customerMessageBackgroundColor: string;
   agentMessageBackgroundColor: string;
@@ -55,10 +55,18 @@ export class ChatroomService {
   }
 
   noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
-  
+
   constructor(private http: HttpClient) { }
 
   createChatroom = (chatroom: Chatroom) => {
     return this.http.post(environment.apiBaseUrl + '/createChatroom', chatroom, this.noAuthHeader);
+  }
+
+  displayChatrooms = () => {
+    return this.http.get(environment.apiBaseUrl + '/myChatrooms', this.noAuthHeader);
+  }
+
+  getVisitorDetails = () => {
+    return this.http.get(environment.apiBaseUrl + '/getVisitorDetails', this.noAuthHeader);
   }
 }

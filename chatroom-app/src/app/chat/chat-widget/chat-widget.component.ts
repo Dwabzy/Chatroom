@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TimeService } from 'src/app/services/time.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
@@ -16,6 +16,7 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   chatroomName: string = "";
 
   agentName: string = "Bot";
+  visitorId: string = "";
 
   @Input() messages: Array<any> = [];
 
@@ -33,6 +34,7 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
     this.chatWindow.nativeElement.style.maxWidth = "0px";
   }
 
+
   ngOnInit(): void {
     this.theme = localStorage.getItem('theme') === 'Dark' ? 'dark-theme' : 'light-theme';
     this.chatroomName = this.activatedRoute.snapshot.params.chatroomName;
@@ -48,6 +50,9 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('visitor-details').subscribe((data: any) => {
       console.log(data);
+      this.visitorId = data.visitorId;
+      if (data.agentName)
+        this.agentName = data.agentName;
 
       let object = { username: "", agentId: "", visitorId: data.visitorId, visitorName: data.visitorName, chatroomName: data.chatroomName };
       localStorage.setItem('agent-details', JSON.stringify(object));
@@ -55,7 +60,6 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('receive-message').subscribe((data: any) => {
       this.messages.push(data);
-
 
       // Set Display Time for previous messages
       let currentMessageIndex = this.messages.length - 1;
@@ -81,21 +85,35 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
         }
       }, 120000);
       this.messages[previousMessageIndex].displayTime = !(currentMessageSender === previousMessageSender && timeDifference < 5);
+
+      // Scroll down
+      setTimeout(() => { this.chatBody.nativeElement.scrollTop = (this.chatBody.nativeElement.scrollHeight); })
+
     });
 
     this.webSocketService.listen('receive-messages').subscribe((data: any) => {
       this.messages = data;
-      console.log(this.messages);
+
+      // Scroll down
+      setTimeout(() => { this.chatBody.nativeElement.scrollTop = (this.chatBody.nativeElement.scrollHeight); })
     });
+  }
 
-
+  // When the visitor disconnects from the page, emit to backend.
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    this.webSocketService.emit('disconnect-visitor', this.visitorId);
   }
 
   sendMessage = (): void => {
     let message = this.visitorMessage.nativeElement.value;
-    let sender = "visitor";
-    let { visitorId } = JSON.parse(<string>localStorage.getItem('agent-details'));
-    this.webSocketService.emit('send-message', { message, sender, visitorId: visitorId });
+    if (message.trim() !== '') {
+      let sender = "visitor";
+      let { visitorId } = JSON.parse(<string>localStorage.getItem('agent-details'));
+      this.webSocketService.emit('send-message', { message, sender, visitorId: visitorId });
+    }
+    // Empty the input field after sending message
+    this.visitorMessage.nativeElement.value = "";
   }
 
   toggleChatWindowHandler = (): void => {

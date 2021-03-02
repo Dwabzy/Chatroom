@@ -1,1 +1,11 @@
-<p>display-chatrooms works!</p>
+<div *ngFor="let chatroom of myChatrooms">
+  <div class="chatroom-card">
+    <button type="button">{{chatroom.chatroom_name}}</button>
+    <button type="button">{{chatroom.first_message}}</button>
+    <button type="button">{{chatroom.online_message}}</button>
+    <button type="button">{{chatroom.offline_message}}</button>
+    <button type="button">{{chatroom.idle_message}}</button>
+    <button type="button">{{chatroom.entity_list}}</button>
+    <p *ngFor="let chatroomTheme of myChatroomsTheme">{{chatroomTheme}}</p>
+  </div>
+</div>
