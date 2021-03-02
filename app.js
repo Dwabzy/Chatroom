@@ -27,16 +27,11 @@ io = socketio(server, {
 let socketFunctions = require('./files/socketFunctions')(io);
 
 
-
-
-
-
-
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+console.log(path.join(__dirname, 'chatroom-app\\dist'));
+app.use(express.static(path.join(__dirname, 'chatroom-app\\dist\\chatroom-app')));
 app.use(session({
   secret: 'chatroom projecto with angular',
   resave: false,
