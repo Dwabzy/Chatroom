@@ -119,6 +119,28 @@ exports.getConnectedVisitors = async (agentId) => {
     })
 }
 
+exports.getOnlineVisitors = (agentId) => {
+    let sql = 'select * from visitor_details where assigned_agent_id=? and online=true;';
+    return new Promise(resolve => {
+        connection.query(sql, [agentId], async (err, results) => {
+            if (err) console.log(err);
+            else {
+                let visitorDetails = []
+                for (let i = 0; i < results.length; i++) {
+                    let visitor = {
+                        chatroomName: results[i].chatroom_name,
+                        visitorDetails: results[i].visitor_details,
+                        visitorId: results[i].visitor_id,
+                        visitorIp: results[i].visitor_ip,
+                        visitorName: results[i].visitor_name
+                    }
+                    visitorDetails.push(visitor);
+                }
+                resolve(visitorDetails);
+            }
+        });
+    });
+}
 
 
 exports.getVisitorDetails = () => {
@@ -133,7 +155,7 @@ exports.getVisitorDetails = () => {
                         chatroomName: results[i].chatroom_name,
                         visitorDetails: results[i].visitor_details,
                         visitorId: results[i].visitor_id,
-                        visitorIp: results[i].vistitor_ip,
+                        visitorIp: results[i].visitor_ip,
                         visitorName: results[i].visitor_name
                     }
                     visitorDetails.push(visitor);

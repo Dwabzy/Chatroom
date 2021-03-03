@@ -10,7 +10,7 @@ interface LoginModel {
 interface SignupModel {
   firstName: string;
   lastName: string;
-  email: string; 
+  email: string;
   mobileNo: string;
   username: string;
   password: string;
@@ -23,7 +23,7 @@ export class UserAuthService {
   loginModel: LoginModel = {
     usernameEmail: "",
     password: ""
-  } 
+  }
 
   signupModel: SignupModel = {
     firstName: "",

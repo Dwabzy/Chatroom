@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
   selectedVisitor: any;
   username: string = "";
   messages: Array<any> = [];
+  selectedMessages: Array<any> = [];
 
   @ViewChild('dropDownButton') dropDownButton!: ElementRef;
   @ViewChild('contactList') contactList!: ElementRef;
@@ -51,14 +52,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('receive-connected-visitors-list').subscribe((data: any) => {
       this.visitorList = data;
-      console.log(data);
-
-      if (this.visitorList.length === 1)
-        this.selectVisitor(this.visitorList[0]);
     })
 
     this.webSocketService.listen('receive-message').subscribe((data: any) => {
       this.messages.push(data);
+      let visitorChat = this.messages.find(visitorChat => { return visitorChat.visitorId === data.visitorId });
+
+      let index = this.messages.indexOf(visitorChat);
+      this.messages[index].messages.push(data);
 
       let currentMessageIndex = this.messages.length - 1;
       let previousMessageIndex = currentMessageIndex - 1;
@@ -88,11 +89,19 @@ export class ChatComponent implements OnInit, AfterViewInit {
       setTimeout(() => { this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight; });
     })
 
+    // Get messages of all users who are online.
+    this.webSocketService.emit('get-all-messages', this.username);
+    this.webSocketService.listen('receive-all-messages').subscribe((data: any) => {
+      this.messages = data;
+      console.log(data);
+      // Scroll to the bottom of the container when new messages are received.
+      setTimeout(() => { this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight; });
+    });
 
 
 
     this.webSocketService.listen('receive-messages').subscribe((data: any) => {
-      this.messages = data;
+      this.selectedMessages = data;
       // Scroll to the bottom of the container when new messages are received.
       setTimeout(() => { this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight; });
     });
@@ -102,9 +111,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   selectVisitor = (visitor: any): void => {
     this.selectedVisitor = visitor;
-    this.webSocketService.emit('get-messages', visitor.visitorId);
+    this.selectedMessages = this.messages.find(visitorChat => { return visitorChat.visitorId === visitor.visitorId }).messages;
+
     this.webSocketService.emit('agent-join-room', visitor.visitorId);
-    console.log(visitor);
   }
 
   sendMessage = (): void => {
@@ -115,7 +124,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       let visitor = this.selectedVisitor;
       let sender = "agent";
 
-      this.webSocketService.emit('send-message', { message, sender, visitorId: visitor.visitorId });
+      this.webSocketService.emit('send-message', { message, sender, chatroomName: "", visitorId: visitor.visitorId });
     }
 
     // Empty input field after sending message.

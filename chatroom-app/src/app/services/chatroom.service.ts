@@ -67,6 +67,7 @@ export class ChatroomService {
   }
 
   getVisitorDetails = () => {
+
     return this.http.get(environment.apiBaseUrl + '/getVisitorDetails', this.noAuthHeader);
   }
 }

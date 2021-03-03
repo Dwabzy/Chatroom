@@ -17,7 +17,7 @@
   <!-- Message Box -->
   <div class="message-window">
     <div #messageContainer class="message-container">
-      <div *ngFor="let message of messages; let i = index" class="message">
+      <div *ngFor="let message of selectedMessages; let i = index" class="message">
 
         <div *ngIf="message.sender==='agent'" class="sent-message media-right">
           {{message.message}}

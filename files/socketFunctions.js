@@ -3,7 +3,7 @@ var { getTime, getTimeMessage } = require('./utilityFunctions');
 var { getUserDetails, getAgentName } = require('./userAuthFunctions');
 var { getChatroomDetails } = require('./chatroomFunctions');
 var { createVisitor, doesVisitorExist, assignAgent, getAssignedAgentId, getConnectedVisitors,
-    getUnconnectedVisitors, setVisitorOffline, setVisitorOnline } = require('./visitorFunctions');
+    getUnconnectedVisitors, setVisitorOffline, setVisitorOnline, getOnlineVisitors } = require('./visitorFunctions');
 var { addMessage, getMessages } = require('./chatFunctions');
 
 
@@ -130,6 +130,7 @@ module.exports = (io) => {
         socket.on('get-messages', async visitorId => {
             let messages = await getMessages(visitorId);
 
+
             for (let i = 0; i < messages.length; i++) {
                 let date = new Date(messages[i].time);
 
@@ -154,9 +155,49 @@ module.exports = (io) => {
             socket.emit('receive-messages', messages);
         });
 
-        socket.on('send-message', async data => {
-            let { message, sender, visitorId } = data;
+        socket.on('get-all-messages', async (username) => {
+            let userDetails = await getUserDetails(username);
+            let agentId = userDetails.userId;
 
+            let allMessages = [];
+            let onlineVisitors = await getOnlineVisitors(agentId);
+
+            for (let i = 0; i < onlineVisitors.length; i++) {
+                let messages = await getMessages(onlineVisitors[i].visitorId);
+
+                for (let j = 0; j < messages.length; j++) {
+                    let date = new Date(messages[j].time);
+
+                    // Get the string to be displayed under the message as time sent.
+                    messages[j].timeMessage = getTimeMessage(messages[j].time, (j + 1) === messages.length);
+                    messages[j].displayTime = true;
+
+                    // Algorithm to display the time.
+                    let currentSender = messages[j].sender;
+                    let timeDifference = 0;
+                    if (messages[j + 1]) {
+                        timeDifference = Math.floor((new Date(messages[j + 1].time).getTime() - date.getTime()) / 60 / 1000);
+                    }
+
+                    /* Display Time only if the time difference between consecutive messages is greater than 5 minutes or if the sender of 2 consecutive
+                    messages is different */
+                    if (messages[j + 1] && currentSender === messages[j + 1].sender && timeDifference < 5) {
+                        messages[j].displayTime = false;
+
+                    }
+                }
+                allMessages.push({ visitorId: onlineVisitors[i].visitorId, messages });
+            }
+            socket.emit('receive-all-messages', allMessages);
+        })
+
+        socket.on('send-message', async data => {
+            let { message, sender, chatroomName, visitorId } = data;
+            let ipAddress = socket.handshake.address;
+            if (!visitorId) {
+                let visitorDetails = await doesVisitorExist(ipAddress, chatroomName);
+                visitorId = visitorDetails.visitorId;
+            }
 
             // Connect to chatroom again, just in case.
             socket.join(visitorId);
@@ -166,6 +207,7 @@ module.exports = (io) => {
 
             // Create message object
             let messageObject = {
+                visitorId,
                 message,
                 sender,
                 time: getTime(),
@@ -184,10 +226,10 @@ module.exports = (io) => {
         })
 
         socket.on('agent-join-room', (visitorId) => {
-
+            console.log(socket.id);
             socket.join(visitorId)
             var users = io.sockets.adapter.rooms.get(visitorId);
-            console.log(users);
+            console.log("Connect:", users);
         })
 
 

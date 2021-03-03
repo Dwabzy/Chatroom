@@ -45,17 +45,13 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
     this.webSocketService.listen('agent-connected').subscribe((data: any) => {
       console.log(data);
       this.agentName = data.username;
-      localStorage.setItem('agent-details', JSON.stringify(data));
     })
 
     this.webSocketService.listen('visitor-details').subscribe((data: any) => {
-      console.log(data);
-      this.visitorId = data.visitorId;
       if (data.agentName)
         this.agentName = data.agentName;
 
       let object = { username: "", agentId: "", visitorId: data.visitorId, visitorName: data.visitorName, chatroomName: data.chatroomName };
-      localStorage.setItem('agent-details', JSON.stringify(object));
     })
 
     this.webSocketService.listen('receive-message').subscribe((data: any) => {
@@ -107,10 +103,10 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
 
   sendMessage = (): void => {
     let message = this.visitorMessage.nativeElement.value;
+    let chatroomName = this.activatedRoute.snapshot.params.chatroomName;
     if (message.trim() !== '') {
       let sender = "visitor";
-      let { visitorId } = JSON.parse(<string>localStorage.getItem('agent-details'));
-      this.webSocketService.emit('send-message', { message, sender, visitorId: visitorId });
+      this.webSocketService.emit('send-message', { message, sender, chatroomName });
     }
     // Empty the input field after sending message
     this.visitorMessage.nativeElement.value = "";
