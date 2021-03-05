@@ -43,7 +43,7 @@ body {
   --foreground: #ffffff;
   --primary-text: #000000;
   --secondary-text: #757474;
-  --text-white: #eeeeee;
+
   --button: #1e88e5;
   --list-hover: #dddddd;
   --button-hover: #3794e6;
@@ -51,6 +51,17 @@ body {
 
   --list-item-odd: #ffffff;
   --list-item-even: #eeeeee;
+
+  --success: #4bb543;
+  --warn: #ffeb3b;
+  --error: #ff7043;
+
+  --success-text: #1b5e20;
+  --warn-text: #5d4037;
+  --error-text: #bf360c;
+
+  --text-white: #eeeeee;
+  --text-black: #000000;
 
 }
 
@@ -70,6 +81,15 @@ body[data-theme='dark'] {
 
   --list-item-odd: #373737;
   --list-item-even: #494949;
+
+
+  --success-text: #4bb543;
+  --warn-text: #fff176;
+  --error-text: #ec8a6c;
+
+  --success: #1b5e20;
+  --warn: #917b00;
+  --error: #bf360c;
 }
 
 body {

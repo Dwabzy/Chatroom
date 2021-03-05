@@ -22,10 +22,27 @@ class UserAuth {
 
             let userData = await userAuthFunctions.userExists(usernameEmail, usernameEmail);
             let responseData = {};
-            // If Password matches with userame or email, Login is Successful and send user data.
-            if (password === userData.password) {
+
+            // If username/email is incorrect.
+            if (!userData) {
                 responseData = {
-                    responseMessage: "Successfull login",
+                    responseMessage: "Please check your Username/ Email Id",
+                    responseType: "warn",
+                    responseStatus: false,
+                };
+            }
+            // If the password is incorrect
+            else if (password !== userData.password) {
+                responseData = {
+                    responseMessage: "Please check your Password",
+                    responseType: "warn",
+                    responseStatus: false,
+                };
+            }
+            // If Password matches with userame or email, Login is Successful and send user data.
+            else if (password === userData.password) {
+                responseData = {
+                    responseMessage: "Successful login",
                     responseStatus: true,
                     username: userData.username,
                     userId: userData.userId,
@@ -38,6 +55,7 @@ class UserAuth {
             else {
                 responseData = {
                     responseMessage: "Login failure",
+                    responseType: "error",
                     responseStatus: false,
                 };
             }

@@ -1,5 +1,3 @@
-var file = require('fs');
-
 exports.getTime = () => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');

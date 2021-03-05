@@ -1,10 +1,258 @@
-.login-form {
-  height: 600px;
-  width: 400px;
+.signin-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px);
 
-  .flex {
+
+
+  .signin-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+
+
+    background-color: var(--foreground);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+    width: 500px;
+    height: 600px;
+
+
+    position: relative;
+
+    .title {
+      font-family: cursive;
+      font-size: 25px;
+      color: var(--primary-text);
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.box-input-2 {
+  margin-top: 30px;
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  width: 200px;
+  padding: none;
+
+
+
+  input {
+    height: inherit;
+    width: calc(100% - 5px);
+    border: 2px solid var(--secondary);
+    padding: 0;
+    padding-left: 8px;
+    color: var(--primary-text);
+    background-color: var(--foreground);
+
+
+
+    &:focus,
+    &:valid {
+      outline: none;
+      border: none;
+
+      &~label {
+        color: var(--button);
+        background-color: transparent;
+        z-index: 1;
+        top: calc((-100% - 20px) / 2);
+        left: 0;
+        transition: top 1s, left 1s;
+      }
+
+      &~.bottom {
+        width: inherit;
+      }
+
+      &~.right {
+        height: inherit;
+        transition-delay: 0.25s;
+      }
+
+      &~.top {
+        width: inherit;
+        transition-delay: 0.5s;
+      }
+
+      &~.left {
+        height: inherit;
+        transition-delay: 0.75s;
+      }
+
+    }
+  }
+
+  label {
+    cursor: text;
+    position: absolute;
+    line-height: inherit;
+    color: var(--primary-text);
+    padding-left: 5px;
+    padding-top: 2px;
+    left: 10px;
+    top: 0px;
+
+    line-height: 40px;
+  }
+
+  .line {
+    position: absolute;
+    background-color: var(--menubar);
+    transition: width 0.25s, height 0.25s;
+  }
+
+  .bottom {
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 0px;
+  }
+
+  .top {
+    top: 0;
+    right: 0;
+    height: 2px;
+    width: 0px;
+  }
+
+  .right {
+    right: 0;
+    bottom: 0;
+    height: 0;
+    width: 2px;
+  }
+
+  .left {
+    left: 0;
+    top: 0;
+    height: 0;
+    width: 2px;
+  }
+}
+
+.eye-icon {
+  color: var(--primary-text);
+  position: absolute;
+  right: 10px;
+  top: 0;
+  line-height: 40px;
+}
+
+.signin-btn {
+  margin-top: 20px;
+  width: 80px;
+  height: 40px;
+
+  color: var(--primary-text);
+
+  cursor: pointer;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+
+  background: transparent;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    border: 2px solid black;
+    background-color: var(--accent);
+    color: var(--text-white);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0px 1px 20px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.signup {
+  margin-top: 20px;
+  text-decoration: none;
+}
+
+.info-label {
+  height: 60px;
+  line-height: 60px;
+
+  width: calc(100% - 10px);
+  position: absolute;
+  top: 0;
+  text-align: center;
+  margin: 5px;
+
+  transition: 1s;
+
+  .info {
+    width: calc(100% - 10px);
+    position: relative;
+    font-size: 20px;
+    color: var(--text-white);
+    transition: 1s;
+
+    button {
+      color: var(--text-white);
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 60px;
+      border: none;
+      background: transparent;
+      outline: none;
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+.success {
+  background-color: var(--success);
+
+  .info {
+    color: var(--success-text);
+
+    button {
+      color: inherit;
+    }
+  }
+}
+
+.error {
+  background-color: var(--error);
+
+  .info {
+    color: var(--error-text);
+
+    button {
+      color: inherit;
+    }
+  }
+}
+
+.warn {
+  background-color: var(--warn);
+
+  .info {
+    color: var(--warn-text);
+
+    button {
+      color: inherit;
+    }
+  }
+
+}
+
+.invis {
+  background: transparent;
+
+  .info {
+    color: transparent;
+
+    button {
+      color: inherit;
+    }
   }
 }

@@ -14,6 +14,7 @@ interface SignupModel {
   mobileNo: string;
   username: string;
   password: string;
+  confirmPassword: string;
 }
 
 @Injectable({
@@ -32,6 +33,7 @@ export class UserAuthService {
     mobileNo: "",
     username: "",
     password: "",
+    confirmPassword: "",
   }
 
   noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };

@@ -123,5 +123,3 @@ exports.getAgentName = (agentId) => {
     });
 }
 
-exports.module = {}
-

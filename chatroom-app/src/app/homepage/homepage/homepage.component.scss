@@ -3,4 +3,221 @@
 .main-content {
   background-color: var(--background);
   height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+section {
+  padding: 5em 2em;
+}
+
+.hero {
+  text-align: center;
+}
+
+.left-col .subhead {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: gray;
+  letter-spacing: 0.3em;
+}
+
+.left-col h1 {
+  font-size: 2.5em;
+  line-height: 1.3em;
+  margin-top: 0.2em;
+}
+
+.left-col .primary-cta {
+  background: var(--primary);
+  color: white;
+  text-decoration: none;
+  padding: 0.6em 1.3em;
+  font-size: 1.4em;
+  border-radius: 5em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.hero-img {
+  width: 70%;
+  margin-top: 3em;
+  mix-blend-mode: multiply;
+
+}
+
+section.features-section {
+  background: var(--menubar);
+  color: white;
+}
+
+ul.features-list {
+  margin: 0;
+  padding-left: 0.1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+ul.features-list li {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  margin-left: 2em;
+  position: relative;
+}
+
+ul.features-list li:before {
+  content: "";
+  left: -2em;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://assets.codepen.io/2621168/bullet.svg");
+  background-size: contain;
+  margin-right: 0.5em;
+}
+
+nav.menu-btn {
+  display: block;
+}
+
+nav {
+  position: fixed;
+  z-index: 999;
+  width: 66%;
+  right: 0;
+  top: 0;
+  background: #20272e;
+  height: 100vh;
+  padding: 1em;
+}
+
+nav ul.primary-nav {
+  margin-top: 5em;
+}
+
+nav li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 0.5em;
+  font-size: 1.3em;
+  text-align: right;
+}
+
+nav li a:hover {
+  font-weight: bold;
+}
+
+.mobile-menu-exit {
+  float: right;
+  margin: 0.5em;
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+
+  .mobile-menu,
+  .mobile-menu-exit {
+    display: none;
+  }
+
+  .navbar .container {
+    display: grid;
+    grid-template-columns: 180px auto;
+    justify-content: unset;
+  }
+
+  .navbar nav {
+    display: flex;
+    justify-content: space-between;
+    background: none;
+    position: unset;
+    height: auto;
+    width: 100%;
+    padding: 0;
+  }
+
+  .navbar nav ul {
+    display: flex;
+  }
+
+  .navbar nav a {
+    color: black;
+    font-size: 1em;
+    padding: 0.1em 1em;
+  }
+
+  .navbar nav ul.primary-nav {
+    margin: 0;
+  }
+
+  .navbar nav li.logsign a {
+    color: var(--primary);
+    border: 3px solid var(--primary);
+    font-weight: bold;
+    border-radius: 5em;
+    margin-top: -0.2em;
+  }
+
+  .navbar nav li.logsign a:hover {
+    background: var(--primary);
+    color: white;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .container {
+    width: 1080px;
+    margin: 0 auto;
+  }
+
+  section {
+    padding: 10em 4em;
+  }
+
+  .hero .container {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .hero .container .left-col {
+    margin: 3em 3em 0 5em;
+  }
+
+  .hero .container .left-col h1 {
+    font-size: 3em;
+    width: 90%;
+  }
+
+  .hero-img {
+    width: 30%;
+    margin-right: 8em;
+  }
+
+  ul.features-list {
+    display: block;
+    margin-left: 5em;
+  }
+
+  ul.features-list li {
+    font-size: 1.4em;
+  }
+
+  ul.features-list li:before {
+    width: 30px;
+    height: 30px;
+  }
+
+  .features-section {
+    position: relative;
+  }
+}
+
+.footer {
+  grid-area: footer;
+  background-color: #203040;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

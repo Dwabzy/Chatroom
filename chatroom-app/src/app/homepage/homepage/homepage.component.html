@@ -2,5 +2,33 @@
   <div class="main-content">
     <homepage-login *ngIf="this.activatedRoute.routeConfig?.path === 'login'"></homepage-login>
     <homepage-signup *ngIf="this.activatedRoute.routeConfig?.path === 'signup'"></homepage-signup>
+    <section *ngIf="this.activatedRoute.routeConfig?.path === ''" class="hero">
+      <div class="container">
+        <div class="left-col">
+          <h1>Cutomer management made easy</h1>
+          <img src="https://cdn.wpspeedmatters.com/wp-content/uploads/2019/12/chat-bubbles.jpg" class="hero-img"
+            alt="Illustration">
+        </div>
+
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="container">
+        <ul class="features-list">
+          <li>Improves customer experience</li>
+          <li>Build rapport with customers</li>
+          <li>Boosts your customer service team’s productivity</li>
+          <li>Increase customer satisfaction</li>
+          <li>Personalize your brand</li>
+          <li>Reduce service costs and boost efficiency</li>
+        </ul>
+
+      </div>
+    </section>
+    <footer class="footer">
+      All rights reserved @PMNSP 2021
+    </footer>
   </div>
+
 </homepage-navbar>

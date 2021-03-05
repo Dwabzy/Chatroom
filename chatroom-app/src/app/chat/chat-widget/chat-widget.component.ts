@@ -6,7 +6,7 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
 @Component({
   selector: 'chat-widget',
   templateUrl: './chat-widget.component.html',
-  styleUrls: ['./chat-widget.component.scss']
+  styleUrls: ['./chat-widget.component.scss'],
 })
 export class ChatWidgetComponent implements OnInit, AfterViewInit {
   isDark: boolean = false;
