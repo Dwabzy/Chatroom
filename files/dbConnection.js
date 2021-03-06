@@ -5,8 +5,8 @@ const connection = mysql.createConnection({
     // user: "admin",
     // password: "maazhussain",
     host: "localhost",
-    user: "Dwabzy",
-    password: "Dwabzy",
+    user: "maaz",
+    password: "root",
     database: "chatroom"
 });
 
@@ -27,4 +27,3 @@ connection.connect(function (err) {
 });
 
 module.exports = connection;
-

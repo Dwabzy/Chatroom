@@ -6,7 +6,7 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
 @Component({
   selector: 'chat-widget',
   templateUrl: './chat-widget.component.html',
-  styleUrls: ['./chat-widget.component.scss'],
+  styleUrls: ['./chat-widget.component.scss']
 })
 export class ChatWidgetComponent implements OnInit, AfterViewInit {
   isDark: boolean = false;
@@ -27,7 +27,7 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   @ViewChild('chatBody') chatBody!: ElementRef;
   @ViewChild('visitorMessage') visitorMessage!: ElementRef;
 
-
+ 
   constructor(public activatedRoute: ActivatedRoute, private webSocketService: WebSocketService, private timeService: TimeService) { }
   ngAfterViewInit(): void {
     this.chatWindow.nativeElement.style.maxHeight = "0px";
@@ -38,7 +38,6 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.theme = localStorage.getItem('theme') === 'Dark' ? 'dark-theme' : 'light-theme';
     this.chatroomName = this.activatedRoute.snapshot.params.chatroomName;
-
     this.webSocketService.emit('new-visitor', this.chatroomName);
 
 

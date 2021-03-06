@@ -134,4 +134,16 @@ exports.getChatroomFullDetails = (chatroomId) => {
 }
 
 
+exports.getViewChat = (visitorId) =>{
+    console.log(visitorId);
+    let sql = 'Select * from chat where visitor_id=?';
+    return new Promise(resolve => {
+        connection.query(sql,[visitorId], async (err, results) => {
+            if (err) console.log(err);
+            else{
+                resolve(results);
+            }
+        });
+    });
+}
 

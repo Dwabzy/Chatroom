@@ -26,4 +26,15 @@ export class ChatroomStatsComponent implements OnInit {
     );
   }
 
+  viewChat=(visitorId:any): void =>{
+  console.log(visitorId);
+      this.chatroomService.viewChat(visitorId).subscribe(
+      (res:any) => {
+        console.log(res);
+        let {chat} = JSON.parse(JSON.stringify(res));
+        console.log(chat);
+    }
+    )
+  }
+
 }
