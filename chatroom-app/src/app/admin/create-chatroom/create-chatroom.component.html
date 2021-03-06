@@ -1,65 +1,82 @@
 <form #createChatroomForm="ngForm" (ngSubmit)="createChatroomForm.valid && onSubmit(createChatroomForm)">
-  <div class="name">
-    <span class="title"> Create new chatroom:</span>
-    <div class="box-input-3 float-right">
-      <input type=" text" id="box-input-3" name="chatroomName" #chatroomName="ngModel"
+  <div class="chatroom-name content">
+    <div class="title"> Create new chatroom:</div>
+    <div class="box-input">
+      <input placeholder=" " type="text" id="box-input-name" name="chatroomName" #chatroomName="ngModel"
         [(ngModel)]="chatroomService.chatroom.chatroomName">
-      <label for="box-input-3">Chatroom Name</label>
+      <label for="box-input-name">Chatroom Name</label>
     </div>
 
   </div>
 
-  <div class=" settings">
-    <hr>
-    <h3> Message to be sent </h3>
-    <table class="message-settings">
+  <div class="messages content">
+    <div class="title"> Message to be sent </div>
+    <table class="message-table">
       <tr>
         <td>When customer connects</td>
         <td>:</td>
         <td>
-          <div class="box-input-3"><input name="firstMessage" #firstMessage="ngModel"
-              [(ngModel)]="chatroomService.chatroom.firstMessage"></div>
+          <div class="box-input">
+            <input placeholder=" " id="firstMessage" name="firstMessage" #firstMessage="ngModel"
+              [(ngModel)]="chatroomService.chatroom.firstMessage">
+          </div>
         </td>
       </tr>
       <tr>
         <td>When agent is online: </td>
         <td>:</td>
         <td>
-          <div class="box-input-3"><input name="onlineMessage" #onlineMessage="ngModel"
-              [(ngModel)]="chatroomService.chatroom.onlineMessage"></div>
+          <div class="box-input">
+            <input placeholder=" " name="onlineMessage" id="onlineMessage" #onlineMessage="ngModel"
+              [(ngModel)]="chatroomService.chatroom.onlineMessage">
+          </div>
         </td>
       </tr>
       <tr>
         <td>When agent is offline: </td>
         <td>:</td>
         <td>
-          <div class="box-input-3"><input name="offlineMessage" #offlineMessage="ngModel"
-              [(ngModel)]="chatroomService.chatroom.offlineMessage"></div>
+          <div class="box-input">
+            <input placeholder=" " id="offlineMessage" name="offlineMessage" #offlineMessage="ngModel"
+              [(ngModel)]="chatroomService.chatroom.offlineMessage">
+          </div>
         </td>
       </tr>
       <tr>
         <td>When agent is idle: </td>
         <td>:</td>
         <td>
-          <div class="box-input-3"><input name="idleMessage" #idleMessage="ngModel"
-              [(ngModel)]="chatroomService.chatroom.idleMessage"></div>
+          <div class="box-input"><input placeholder=" " id="idleMessage" name="idleMessage" #idleMessage="ngModel"
+              [(ngModel)]="chatroomService.chatroom.idleMessage">
+          </div>
         </td>
       </tr>
     </table>
-    <hr>
   </div>
-  <div class="entity">
-    <h3> User Info: </h3>
-    <div class="box-input-3"><input #entity></div>
-    <button type="button" (click)="createEntity()">
-      <mat-icon>add_circle</mat-icon>
-    </button>
-    <div *ngFor="let entity of entityList">{{entity}} <button type="button" (click)="removeEntity(entity)">X</button>
-    </div>
+  <div class="entity content">
+    <h3 class="title"> User Info </h3>
+    <table>
+      <tr>
+        <td>
+          <div class="box-input">
+            <input placeholder=" " id="box-input-entity" #entity>
+            <label for="box-input-entity">Add Entity Key </label>
+          </div>
+        <td><button type="button" (click)="createEntity()" class="add-entity-button">
+            <mat-icon> add_circle</mat-icon>
+          </button>
+      </tr>
+    </table>
+    <ul class="entity-key" *ngFor="let entity of entityList">
+      <li>{{entity}}
+        <button type="button" (click)="removeEntity(entity)" class="delete-entity">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </li>
+    </ul>
   </div>
-  <div class="theme">
-    <hr>
-    <h3>Theme:</h3>
+  <div class="theme content">
+    <h3 class="title">ChatBox Theme</h3>
     <select (change)="selectTheme($event)" class="theme-selector">
       <option value="default">Default</option>
       <option value="blue">Blue</option>
@@ -68,31 +85,34 @@
       <option value="yellow">Yellow</option>
       <option value="custom">Custom</option>
     </select>
+
     <div *ngIf="theme==='custom'" class="custom-theme">
       <table>
-        <tr>
+        <tr class="adjust">
           <td> TitleBar</td>
-          <td><input type="color" name="titlebarColor" #titlebarColor="ngModel"
+          <td><input class="color-input" type="color" name="titlebarColor" #titlebarColor="ngModel"
               [(ngModel)]="chatroomService.theme.titlebarColor"></td>
         </tr>
         <tr>
           <td> CustomerMessageBackgroundColor</td>
-          <td><input type="color" name="customerMessageBackgroundColor" #customerMessageBackgroundColor="ngModel"
+          <td><input class="color-input" type="color" name="customerMessageBackgroundColor"
+              #customerMessageBackgroundColor="ngModel"
               [(ngModel)]="chatroomService.theme.customerMessageBackgroundColor"></td>
         </tr>
         <tr>
           <td> AgentMessageBackgroundColor</td>
-          <td><input type="color" name="agentMessageBackgroundColor" #agentMessageBackgroundColor="ngModel"
-              [(ngModel)]="chatroomService.theme.agentMessageBackgroundColor"></td>
+          <td><input class="color-input" type="color" name="agentMessageBackgroundColor"
+              #agentMessageBackgroundColor="ngModel" [(ngModel)]="chatroomService.theme.agentMessageBackgroundColor">
+          </td>
         </tr>
         <tr>
           <td> CustomerMessageTextColor</td>
-          <td><input type="color" name="customerMessageTextcolor" #customerMessageTextcolor="ngModel"
-              [(ngModel)]="chatroomService.theme.customerMessageTextcolor"></td>
+          <td><input class="color-input" type="color" name="customerMessageTextcolor"
+              #customerMessageTextcolor="ngModel" [(ngModel)]="chatroomService.theme.customerMessageTextcolor"></td>
         </tr>
         <tr>
           <td> AgentMessageTextColor</td>
-          <td><input type="color" name="agentMessageTextColor" #agentMessageTextColor="ngModel"
+          <td><input class="color-input" type="color" name="agentMessageTextColor" #agentMessageTextColor="ngModel"
               [(ngModel)]="chatroomService.theme.agentMessageTextColor"></td>
         </tr>
         <tr>
@@ -121,14 +141,16 @@
         </tr>
         <tr>
           <td> WidgetColor</td>
-          <td><input type="color" name="widgetColor" #widgetColor="ngModel"
+          <td><input class="color-input" type="color" name="widgetColor" #widgetColor="ngModel"
               [(ngModel)]="chatroomService.theme.widgetColor"></td>
         </tr>
       </table>
     </div>
   </div>
-  <div class="submit">
-    <input type="submit">
+  <div class="btn-container">
+    <input class="create-btn" type="submit" value="Create">
   </div>
+
+
+  <chat-widget></chat-widget>
 </form>
-<chat-widget></chat-widget>

@@ -1,5 +1,7 @@
 var connection = require('./dbConnection');
 var { getTime } = require('./utilityFunctions');
+var { getAgentName } = require('./userAuthFunctions');
+var { getVisitorName } = require('./visitorFunctions');
 
 //------------------------------------------------------------Create Visitor-----------------------------------------------------------------------
 
@@ -55,7 +57,7 @@ exports.getMessages = async (visitorId) => {
     });
 }
 
-exports.getVisitorChat = () => {
+exports.getAllVisitorChat = () => {
     let sql = 'Select * from chat';
     return new Promise(resolve => {
         connection.query(sql, [], async (err, results) => {
@@ -63,16 +65,48 @@ exports.getVisitorChat = () => {
             else {
                 let visitorsChat = []
                 for (let i = 0; i < results.length; i++) {
+
                     let chat = {
                         agentId: results[i].agent_id,
                         visitorId: results[i].visitor_id,
                         sender: results[i].sender,
                         message: results[i].message,
-                        time: results[i].time_sent
+                        time: results[i].time_sent,
                     }
                     visitorsChat.push(chat);
                 }
                 resolve(visitorsChat);
+            }
+        });
+    });
+}
+
+exports.getVisitorChat = (visitorId) => {
+    let sql = 'Select * from chat where visitor_id=?';
+    return new Promise(resolve => {
+        connection.query(sql, [visitorId], async (err, results) => {
+            if (err) console.log(err);
+            else {
+                let visitorChat = []
+                for (let i = 0; i < results.length; i++) {
+                    let agentName = await getAgentName(results[i].agent_id);
+                    if (!agentName)
+                        agentName = "Bot";
+                    let visitorName = await getVisitorName(results[i].visitor_id);
+
+                    let chat = {
+                        agentId: results[i].agent_id,
+                        visitorId: results[i].visitor_id,
+                        visitorName: visitorName,
+                        sender: results[i].sender,
+                        message: results[i].message,
+                        time: results[i].time_sent,
+                        agentName: agentName
+                    }
+                    console.log(chat);
+                    visitorChat.push(chat);
+                }
+                resolve(visitorChat);
             }
         });
     });

@@ -14,6 +14,6 @@ import { IconComponent } from './icon/icon.component';
     MaterialModule,
     FormsModule
   ],
-  exports: [ChatWidgetComponent]
+  exports: [ChatWidgetComponent, IconComponent]
 })
 export class ChatModule { }

@@ -4,12 +4,14 @@ var { getVisitorDetails } = require('../files/visitorFunctions');
 var { getVisitorChat } = require('../files/chatFunctions');
 
 
-class UserAuth {
+
+class Chatroom {
 
     constructor(app) {
         this.createChatroom(app);
         this.displayChatrooms(app);
         this.getVisitorDetails(app);
+        this.viewChat(app);
     }
 
     createChatroom(app) {
@@ -64,9 +66,23 @@ class UserAuth {
             res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept');
 
             let visitorDetails = await getVisitorDetails();
-            let visitorChat = await getVisitorChat();
-            res.send({ visitorDetails, visitorChat });
+            res.send(visitorDetails);
+        })
+    }
+
+    viewChat(app) {
+        app.get('/viewChat', async (req, res) => {
+
+            let { visitorId } = req.query;
+            console.log(visitorId);
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept');
+
+            let chat = await getVisitorChat(visitorId);
+            console.log(chat);
+            res.send(chat);
         })
     }
 }
-module.exports = UserAuth;
+module.exports = Chatroom;

@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MaterialModule } from '../material/material.module';
+import { ChatModule } from '../chat/chat.module';
 
 
 
@@ -23,6 +24,7 @@ import { MaterialModule } from '../material/material.module';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    ChatModule
   ]
 })
 export class HomepageModule { }

@@ -27,6 +27,7 @@ button {
     border: 0;
     color: var(--text-white);
     background-color: var(--menubar);
+    z-index: 100;
 
 
 
@@ -61,12 +62,17 @@ button {
     }
 
     .dropdown-nav {
+      height: auto;
       position: relative;
       line-height: 70px;
+      display: flex;
+      z-index: 100;
 
       .dropdown-button {
+        position: relative;
         font-size: 30px;
         margin: 0;
+        height: 40px;
       }
 
       .dropdown-links {
@@ -75,6 +81,7 @@ button {
         transition: max-height 0.2s ease-out;
 
         position: absolute;
+        top: 40px;
         left: -100px;
         line-height: 40px;
         background-color: #f9f9f9;
@@ -88,6 +95,7 @@ button {
           display: block;
           width: 100%;
           height: 40px;
+
           text-align: center;
           background-color: var(--foreground);
           color: var(--primary-text);
@@ -125,7 +133,7 @@ button {
         padding-left: 0;
 
         li {
-          width: calc(100% - 20px);
+          width: calc(100%);
           padding: 10px;
           list-style-type: none;
           text-align: center;
@@ -145,6 +153,19 @@ button {
       }
     }
   }
+}
+
+.logo {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.icon {
+  display: block;
+  height: 50px;
+  width: 50px;
+  margin: auto;
+  padding-top: 5px;
 }
 
 

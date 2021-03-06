@@ -1,7 +1,10 @@
 <div class="main-container">
   <div class="navbar" id="navbar">
     <button *ngIf="minimizeSidenav" class="menu" (click)="toggleSidenavHandler()">
-      <mat-icon>lunch_dining</mat-icon>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button (click)="this.router.navigateByUrl('/')" class="logo">
+      <chat-icon class="icon"></chat-icon>
     </button>
     <span class="title">Chatroom</span>
     <span class="spacer"></span>

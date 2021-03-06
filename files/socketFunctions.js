@@ -13,7 +13,7 @@ module.exports = (io) => {
     io.on('connection', async socket => {
         // Get ip of customer
         let ipAddress = socket.handshake.address;
-        ipAddress = "::ffff:60.243.12.98";
+        ipAddress = "::ffff:61.243.30.98";
         ipAddress = ipAddress.slice(7);
 
         // Runs when the new connection is a new visitor.

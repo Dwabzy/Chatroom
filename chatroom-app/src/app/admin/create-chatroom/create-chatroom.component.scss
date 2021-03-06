@@ -7,34 +7,28 @@ button {
   background: transparent;
 }
 
-.float-right {
-  float: right;
-}
-
-.box-input-3 {
+.box-input {
   position: relative;
-  height: 40px;
-  line-height: 40px;
-  width: 200px;
+  height: 45px;
+  line-height: 45px;
+  width: 250px;
   padding: none;
   border-radius: 10px;
-  // float: right;
-
-
 
 
   input {
     height: inherit;
     width: calc(100% - 5px);
-    border: inherit;
+    border: 2px solid var(--secondary-text);
     border-radius: inherit;
     padding: 0;
-    padding-left: 5px;
+    padding-left: 10px;
     color: var(--primary-text);
     background-color: var(--foreground);
 
 
-    &:focus {
+    &:focus,
+    &:not(:placeholder-shown) {
       outline: none;
       border: 2px solid var(--menubar);
       transition: 0.3s linear;
@@ -57,37 +51,146 @@ button {
     padding-left: 5px;
     left: 10px;
     top: 0px;
+
+    font-weight: 500;
   }
 }
 
-.name {
-  margin-top: 20px;
-  max-width: 500px;
-  height: 40px;
-  line-height: 40px;
+
+.content {
+  padding: 10px;
+  background-color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+  margin-bottom: 10px;
+  z-index: 1;
 
   .title {
+    width: 40%;
+    font-size: 20px;
     color: var(--primary-text);
-    width: 50%;
-    font-size: 24px;
-    float: left;
+    padding-bottom: 10px;
   }
 }
 
-.settings {
-  clear: both;
 
-  .message-settings {
+.chatroom-name {
+  height: 120px;
+  width: 100%;
+}
+
+.messages {
+  color: var(--primary-text);
+
+  .message-table {
+    border-collapse: collapse;
+
     tr {
+      margin-bottom: 10px;
+
       td {
         vertical-align: middle;
+        font-size: 15px;
       }
     }
   }
 }
 
+.entity {
+  color: var(--primary-text);
+
+
+  table {
+    vertical-align: middle;
+  }
+
+  .entity-key {
+    margin-left: 10px;
+    padding: 10px;
+    margin-bottom: 2px;
+    font-size: 17px;
+    width: 25%;
+  }
+
+  .add-entity-button {
+    padding-top: 10px;
+    color: var(--primary-text);
+  }
+
+  .delete-entity {
+    padding-top: 10px;
+    line-height: 40px;
+  }
+}
+
+
+.theme {
+  color: var(--primary-text);
+
+  .custom-theme {
+
+    tr {
+      margin-bottom: 20px;
+
+      td {
+        vertical-align: middle;
+        font-size: 15px;
+      }
+    }
+
+    .color-input {
+      background: transparent;
+      border-radius: 2px;
+      padding: 15px;
+      margin-bottom: 5px;
+      margin-left: 15px;
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+}
+
 
 select {
-  width: 200px;
+  width: 250px;
   height: 40px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
+  background-color: var(--foreground);
+  color: var(--primary-text);
+}
+
+.btn-container {
+  display: flex;
+  align-content: center;
+
+  .create-btn {
+    width: 80px;
+    border: 1px solid var(--accent);
+    color: var(--primary-text);
+    height: 40px;
+    background: transparent;
+
+
+
+    margin-bottom: 100px;
+    margin: auto;
+
+    &:hover {
+      background-color: var(--accent);
+      border-color: black;
+      color: var(--text-white);
+    }
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .box-input {
+    width: 100%;
+    transition: 1s;
+  }
 }

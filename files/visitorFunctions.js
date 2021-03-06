@@ -36,7 +36,7 @@ exports.setVisitorOffline = (visitorId) => {
     connection.query(sql, [visitorId], (err, results) => {
         if (err) console.log(err);
         else {
-            console.log(`Visitor is offline`);
+            console.log(`Visitor is offline: `, visitorId);
         }
     })
 }
@@ -46,7 +46,7 @@ exports.setVisitorOnline = (visitorId) => {
     connection.query(sql, [visitorId], (err, results) => {
         if (err) console.log(err);
         else {
-            console.log(`Visitor is online`);
+            console.log(`Visitor is online: `, visitorId);
         }
     })
 }
@@ -156,7 +156,8 @@ exports.getVisitorDetails = () => {
                         visitorDetails: results[i].visitor_details,
                         visitorId: results[i].visitor_id,
                         visitorIp: results[i].visitor_ip,
-                        visitorName: results[i].visitor_name
+                        visitorName: results[i].visitor_name,
+                        hasJoinedChat: results[i].has_joined_chat
                     }
                     visitorDetails.push(visitor);
                 }
@@ -165,6 +166,21 @@ exports.getVisitorDetails = () => {
         });
     });
 }
+
+exports.getVisitorName = (visitorId) => {
+    let sql = 'Select * from visitor_details where visitor_id=?';
+    return new Promise(resolve => {
+        connection.query(sql, [visitorId], async (err, results) => {
+            if (err) console.log(err);
+            else if (results.length !== 0) {
+                resolve(results[0].visitor_name);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+}
+
 
 
 

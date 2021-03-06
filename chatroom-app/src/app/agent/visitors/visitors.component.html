@@ -6,3 +6,8 @@
     <button type="button" (click)="connectToVisitor(visitor)"> Chat </button>
   </div>
 </div>
+
+<div *ngIf="visitorList.length === 0" class="no-visitor">
+  <img src="../../../assets/images/sadChat.png">
+  <span> There are no new visitors at the moment!</span>
+</div>

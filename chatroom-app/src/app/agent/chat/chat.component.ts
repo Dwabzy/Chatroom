@@ -16,10 +16,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
   displayDropdownContacts: boolean = false;
   theme: 'dark-theme' | 'light-theme' = 'light-theme';
   visitorList: Array<any> = [];
-  selectedVisitor: any;
+  selectedVisitor: any = null;
   username: string = "";
   messages: Array<any> = [];
   selectedMessages: Array<any> = [];
+
+  displayMessage: string = "Select a Visitor to chat with!";
 
   @ViewChild('dropDownButton') dropDownButton!: ElementRef;
   @ViewChild('contactList') contactList!: ElementRef;
@@ -40,6 +42,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+
+
     this.theme = localStorage.getItem('theme') === "Dark" ? 'dark-theme' : 'light-theme';
     this.breakpointObserver.observe([
       '(max-width: 618px)',
@@ -52,6 +57,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     this.webSocketService.listen('receive-connected-visitors-list').subscribe((data: any) => {
       this.visitorList = data;
+      // Check if there are no visitors.
+      if (this.visitorList.length === 0)
+        this.displayMessage = "You don't any visitors to chat with!";
     })
 
     this.webSocketService.listen('receive-message').subscribe((data: any) => {

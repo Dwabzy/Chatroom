@@ -1,34 +1,33 @@
-<form #signInForm="ngForm" class="signin-form" (ngSubmit)="onSubmit(signInForm)">
-  <div class="signin-container">
+<form #signInForm="ngForm" class="signin-container" (ngSubmit)="onSubmit(signInForm)">
 
-    <div #messageLabel class="info-label invis">
-      <div class="info">{{messageStatus}} <button type="button" (click)="removeLabel()">&#10006;</button></div>
-    </div>
-
-    <div class="title"> Login </div>
-    <div class="box-input-2">
-      <input required type="text" id="usernameEmail" name="usernameEmail" #usernameEmail="ngModel"
-        [(ngModel)]="userAuthService.loginModel.usernameEmail">
-      <label for="usernameEmail">Username/ Email</label>
-      <span class="horizontal bottom line"></span>
-      <span class="horizontal top line"></span>
-      <span class="vertical right line"></span>
-      <span class="vertical left line"></span>
-    </div>
-    <div class="box-input-2">
-      <input required [type]="showPassword ? 'text' : 'password'" id="password" name="password" #password="ngModel"
-        [(ngModel)]="userAuthService.loginModel.password">
-      <label for="password">Password</label>
-      <span class="horizontal bottom line"></span>
-      <span class="horizontal top line"></span>
-      <span class="vertical right line"></span>
-      <span class="vertical left line"></span>
-      <mat-icon class="eye-icon" (click)="showPassword = !showPassword">
-        {{showPassword ? 'visibility_off' : 'visibility'}}
-      </mat-icon>
-    </div>
-
-    <a class="signup" href="/signup"> Don't have an account? </a>
-    <button class="signin-btn">Login</button>
+  <div #messageLabel class="info-label invis">
+    <div class="info">{{messageStatus}} <button type="button" (click)="removeLabel()">&#10006;</button></div>
   </div>
+
+  <div class="title"> Login </div>
+  <div class="box-input-2">
+    <input required type="text" id="usernameEmail" name="usernameEmail" #usernameEmail="ngModel"
+      [(ngModel)]="userAuthService.loginModel.usernameEmail">
+    <label for="usernameEmail">Username/ Email</label>
+    <span class="horizontal bottom line"></span>
+    <span class="horizontal top line"></span>
+    <span class="vertical right line"></span>
+    <span class="vertical left line"></span>
+  </div>
+  <div class="box-input-2">
+    <input required [type]="showPassword ? 'text' : 'password'" id="password" name="password" #password="ngModel"
+      [(ngModel)]="userAuthService.loginModel.password">
+    <label for="password">Password</label>
+    <span class="horizontal bottom line"></span>
+    <span class="horizontal top line"></span>
+    <span class="vertical right line"></span>
+    <span class="vertical left line"></span>
+    <mat-icon class="eye-icon" (click)="showPassword = !showPassword">
+      {{showPassword ? 'visibility_off' : 'visibility'}}
+    </mat-icon>
+  </div>
+
+  <a class="signup" href="/signup"> Don't have an account? </a>
+  <button class="signin-btn">Login</button>
+
 </form>

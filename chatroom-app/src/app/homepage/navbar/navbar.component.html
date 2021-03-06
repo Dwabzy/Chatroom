@@ -1,7 +1,9 @@
 <div class="main-container">
   <div class="navbar" id="navbar">
 
-
+    <button (click)="this.router.navigateByUrl('/')" class="logo">
+      <chat-icon class="icon"></chat-icon>
+    </button>
     <a href="/" class="title">Chatroom</a>
     <span class="spacer"></span>
     <!-- Displayed when the width of the screen is less than 400px -->
@@ -32,4 +34,5 @@
     </div>
   </div>
   <ng-content></ng-content>
+
 </div>

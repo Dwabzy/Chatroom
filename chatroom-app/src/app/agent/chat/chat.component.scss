@@ -6,6 +6,7 @@ button {
   outline: none;
   border: none;
   cursor: pointer;
+
 }
 
 .chat-window {
@@ -19,17 +20,17 @@ button {
     height: auto;
     min-width: 200px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
-    z-index: 100;
+    z-index: 50;
 
     .contact {
       width: 100%;
       height: 40px;
       border: none;
-      background-color: var(--list-item-odd);
+      background-color: var(--list-item-even);
       color: var(--primary-text);
 
       &:nth-child(odd) {
-        background-color: var(--list-item-even);
+        background-color: var(--list-item-odd);
       }
 
       &:focus {
@@ -123,7 +124,9 @@ button {
       width: 100%;
       align-self: center;
       height: 40px;
-      background-color: var(--secondary);
+
+      background-color: var(--foreground);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 
 
       input {
@@ -131,7 +134,8 @@ button {
         height: 40px;
         outline: none;
         border: none;
-        background-color: var(--secondary);
+        background-color: var(--foreground);
+
         color: var(--primary-text);
       }
 
@@ -172,6 +176,7 @@ button {
 
     button {
       border-radius: 50%;
+      color: var(--primary-text);
 
       &:active {
         background-color: rgba(0, 0, 0, 0.1);
@@ -179,17 +184,15 @@ button {
     }
   }
 
-  .dropdown-button {
-    transition: transform 0.5s;
-  }
-
   .drop-down {
+
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
   }
 
   .rotate {
+    transition: 1s;
     transform: rotate(-180deg);
   }
 
@@ -200,6 +203,18 @@ button {
     height: 100%;
     min-width: 300px;
   }
+}
+
+.no-selected-visitor {
+  width: 100%;
+  position: absolute;
+  top: calc((100vh - 90px)/ 2);
+
+  text-align: center;
+  font-size: 1.5em;
+  font-family: cursive;
+
+  color: var(--primary-text);
 }
 
 ::-webkit-scrollbar {

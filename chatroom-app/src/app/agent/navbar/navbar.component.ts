@@ -19,7 +19,7 @@ export class NavbarComponent {
 
 
   constructor(
-    private router: Router,
+    public router: Router,
     private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute) {
     this.username = this.activatedRoute.snapshot.params.username;
@@ -33,10 +33,10 @@ export class NavbarComponent {
 
     this.breakpointObserver.observe([
       '(max-width: 867px)',
-      '(max-width: 409px)'
+      '(max-width: 444px)'
     ]).subscribe((state: BreakpointState) => {
       this.minimizeSidenav = state.breakpoints['(max-width: 867px)'];
-      this.dropdownNavbar = state.breakpoints['(max-width: 409px)'];
+      this.dropdownNavbar = state.breakpoints['(max-width: 444px)'];
 
 
       /* 

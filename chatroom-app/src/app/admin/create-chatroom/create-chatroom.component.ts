@@ -10,7 +10,7 @@ import { ChatroomService } from 'src/app/services/chatroom.service';
   providers: [NgForm]
 })
 export class CreateChatroomComponent implements OnInit {
-  theme: string = "custom";
+  theme: string = "default";
   entityList: Array<string> = [];
   chatroomCreationStatus!: boolean;
   @ViewChild('entity') entityElement!: ElementRef;
@@ -23,7 +23,8 @@ export class CreateChatroomComponent implements OnInit {
 
   createEntity = (): void => {
     let entityName = this.entityElement.nativeElement.value;
-    this.entityList.push(entityName);
+    if (entityName)
+      this.entityList.push(entityName);
   }
 
   removeEntity = (entity: string): void => {
@@ -44,7 +45,7 @@ export class CreateChatroomComponent implements OnInit {
       (res: any) => {
         this.chatroomCreationStatus = res;
 
-        },
+      },
       (err: any) => {
         console.log(err);
       }

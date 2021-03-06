@@ -19,10 +19,9 @@ export class NavbarComponent {
 
 
   constructor(
-    private router: Router,
+    public router: Router,
     private breakpointObserver: BreakpointObserver,
-    private activatedRoute: ActivatedRoute)
-  {
+    private activatedRoute: ActivatedRoute) {
     this.username = this.activatedRoute.snapshot.params.username;
   }
 
@@ -34,10 +33,10 @@ export class NavbarComponent {
 
     this.breakpointObserver.observe([
       '(max-width: 867px)',
-      '(max-width: 409px)'
-    ]).subscribe( (state: BreakpointState) => {
+      '(max-width: 444px)'
+    ]).subscribe((state: BreakpointState) => {
       this.minimizeSidenav = state.breakpoints['(max-width: 867px)'];
-      this.dropdownNavbar = state.breakpoints['(max-width: 409px)'];
+      this.dropdownNavbar = state.breakpoints['(max-width: 444px)'];
 
 
       /* 
@@ -53,7 +52,7 @@ export class NavbarComponent {
       } else {
         this.toggleSidenav = false;
         sidenavList.style.display = "block";
-        sidenav.style.position = ""; 
+        sidenav.style.position = "";
         sidenav.style.width = "250px";
       }
 
@@ -79,7 +78,7 @@ export class NavbarComponent {
     if (this.toggleSidenav === false) {
       sidenavList.style.display = "none";
       sidenav.style.width = "0px";
-      setTimeout(() => { sidenav.style.position = "";}, 500)
+      setTimeout(() => { sidenav.style.position = ""; }, 500)
     } else {
       sidenavList.style.display = "block";
       sidenav.style.position = "absolute";
@@ -98,9 +97,9 @@ export class NavbarComponent {
     }
   }
 
-  
 
-  onLogout(){
+
+  onLogout() {
     this.router.navigate(['/']);
   }
 }

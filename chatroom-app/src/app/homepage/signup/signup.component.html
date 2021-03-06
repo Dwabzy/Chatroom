@@ -1,80 +1,76 @@
-<form #signUpForm="ngForm" class="signup-form" (ngSubmit)="onSubmit(signUpForm)">
-  <div class="signin-container">
-    <div #messageLabel class="info-label invis">
-      <div class="info">{{messageStatus}} <button type="button" (click)="removeLabel()">&#10006;</button></div>
-    </div>
-
-    <div class="title"> Sign Up </div>
-
-    <div class="open-input-2">
-      <input placeholder=" " required id="firstname" type="text" #firstName="ngModel"
-        [(ngModel)]="userAuthService.signupModel.firstName" name="firstName"
-        [class.error-border]="firstName.invalid && (firstName.dirty || firstName.touched)">
-      <label [class.error-text]="firstName.invalid && (firstName.dirty || firstName.touched)" for="firstname">First
-        Name</label>
-      <span [class.error-line]="firstName.invalid && (firstName.dirty || firstName.touched)" class="line"></span>
-      <span [class.error-line]="firstName.invalid && (firstName.dirty || firstName.touched)"
-        class="bottom-2 line"></span>
-    </div>
-
-    <div class="open-input-2">
-      <input placeholder=" " id="lastname" required type="text" #lastName="ngModel"
-        [(ngModel)]="userAuthService.signupModel.lastName" name="lastName"
-        [class.error-border]="lastName.invalid && (lastName.dirty || lastName.touched)">
-      <label [class.error-text]="lastName.invalid && (lastName.dirty || lastName.touched)" for="lastname">Last
-        Name</label>
-      <span [class.error-line]="lastName.invalid && (lastName.dirty || lastName.touched)" class="line"></span>
-      <span [class.error-line]="lastName.invalid && (lastName.dirty || lastName.touched)" class="bottom-2 line"></span>
-    </div>
-
-    <div class="open-input-2">
-      <input placeholder=" " required id="email" type="email" #email="ngModel"
-        [(ngModel)]="userAuthService.signupModel.email" name="email"
-        [class.error-border]="email.invalid && (email.dirty || email.touched)">
-      <label [class.error-text]="email.invalid && (email.dirty || email.touched)" for="email">Email</label>
-      <span [class.error-line]="email.invalid && (email.dirty || email.touched)" class="line"></span>
-      <span [class.error-line]="email.invalid && (email.dirty || email.touched)" class="bottom-2 line"></span>
-    </div>
-    <div class="open-input-2">
-      <input placeholder=" " required type="tel" id="phonenumber" #mobileNo="ngModel"
-        [(ngModel)]="userAuthService.signupModel.mobileNo" name="mobileNo"
-        [class.error-border]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)">
-      <label [class.error-text]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" for="phonenumber">Mobile
-        Number</label>
-      <span [class.error-line]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" class="line"></span>
-      <span [class.error-line]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" class="bottom-2 line"></span>
-    </div>
-    <div class="open-input-2">
-      <input placeholder=" " required type="text" #username="ngModel" [(ngModel)]="userAuthService.signupModel.username"
-        name="username" [class.error-border]="username.invalid && (username.dirty || username.touched)">
-      <label [class.error-text]="username.invalid && (username.dirty || username.touched)"
-        for="username">Username</label>
-      <span [class.error-line]="username.invalid && (username.dirty || username.touched)" class="line"></span>
-      <span [class.error-line]="username.invalid && (username.dirty || username.touched)" class="bottom-2 line"></span>
-    </div>
-    <div class="open-input-2">
-      <input placeholder=" " autocomplete required type="password" #password="ngModel"
-        [(ngModel)]="userAuthService.signupModel.password" name="password"
-        [class.error-border]="password.invalid && (password.dirty || password.touched)">
-      <label [class.error-text]="password.invalid && (password.dirty || password.touched)"
-        for="password">Password</label>
-      <span [class.error-line]="password.invalid && (password.dirty || password.touched)" class="line"></span>
-      <span [class.error-line]="password.invalid && (password.dirty || password.touched)" class="bottom-2 line"></span>
-    </div>
-    <div class="open-input-2">
-      <input placeholder=" " required id="confirmPassword" type="confirmPassword" #confirmPassword="ngModel"
-        [(ngModel)]="userAuthService.signupModel.confirmPassword" name="confirmPassword"
-        [class.error-border]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
-      <label [class.error-text]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
-        for="confirmPassword">Confirm Password</label>
-      <span [class.error-line]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
-        class="line"></span>
-      <span [class.error-line]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
-        class="bottom-2 line"></span>
-    </div>
-
-    <a class="login" href="/login"> Already have an account? </a>
-    <button class="signup-btn">Sign Up</button>
+<form #signUpForm="ngForm" class="signup-container" (ngSubmit)="onSubmit(signUpForm)">
+  <div #messageLabel class="info-label invis">
+    <div class="info">{{messageStatus}} <button type="button" (click)="removeLabel()">&#10006;</button></div>
   </div>
+
+  <div class="title"> Sign Up </div>
+
+  <div class="open-input-2">
+    <input placeholder=" " required id="firstname" type="text" #firstName="ngModel"
+      [(ngModel)]="userAuthService.signupModel.firstName" name="firstName"
+      [class.error-border]="firstName.invalid && (firstName.dirty || firstName.touched)">
+    <label [class.error-text]="firstName.invalid && (firstName.dirty || firstName.touched)" for="firstname">First
+      Name</label>
+    <span [class.error-line]="firstName.invalid && (firstName.dirty || firstName.touched)" class="line"></span>
+    <span [class.error-line]="firstName.invalid && (firstName.dirty || firstName.touched)" class="bottom-2 line"></span>
+  </div>
+
+  <div class="open-input-2">
+    <input placeholder=" " id="lastname" required type="text" #lastName="ngModel"
+      [(ngModel)]="userAuthService.signupModel.lastName" name="lastName"
+      [class.error-border]="lastName.invalid && (lastName.dirty || lastName.touched)">
+    <label [class.error-text]="lastName.invalid && (lastName.dirty || lastName.touched)" for="lastname">Last
+      Name</label>
+    <span [class.error-line]="lastName.invalid && (lastName.dirty || lastName.touched)" class="line"></span>
+    <span [class.error-line]="lastName.invalid && (lastName.dirty || lastName.touched)" class="bottom-2 line"></span>
+  </div>
+
+  <div class="open-input-2">
+    <input placeholder=" " required id="email" type="email" #email="ngModel"
+      [(ngModel)]="userAuthService.signupModel.email" name="email"
+      [class.error-border]="email.invalid && (email.dirty || email.touched)">
+    <label [class.error-text]="email.invalid && (email.dirty || email.touched)" for="email">Email</label>
+    <span [class.error-line]="email.invalid && (email.dirty || email.touched)" class="line"></span>
+    <span [class.error-line]="email.invalid && (email.dirty || email.touched)" class="bottom-2 line"></span>
+  </div>
+  <div class="open-input-2">
+    <input placeholder=" " required type="tel" id="phonenumber" #mobileNo="ngModel"
+      [(ngModel)]="userAuthService.signupModel.mobileNo" name="mobileNo"
+      [class.error-border]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)">
+    <label [class.error-text]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" for="phonenumber">Mobile
+      Number</label>
+    <span [class.error-line]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" class="line"></span>
+    <span [class.error-line]="mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)" class="bottom-2 line"></span>
+  </div>
+  <div class="open-input-2">
+    <input placeholder=" " required type="text" #username="ngModel" [(ngModel)]="userAuthService.signupModel.username"
+      name="username" [class.error-border]="username.invalid && (username.dirty || username.touched)">
+    <label [class.error-text]="username.invalid && (username.dirty || username.touched)" for="username">Username</label>
+    <span [class.error-line]="username.invalid && (username.dirty || username.touched)" class="line"></span>
+    <span [class.error-line]="username.invalid && (username.dirty || username.touched)" class="bottom-2 line"></span>
+  </div>
+  <div class="open-input-2">
+    <input placeholder=" " autocomplete required type="password" #password="ngModel"
+      [(ngModel)]="userAuthService.signupModel.password" name="password"
+      [class.error-border]="password.invalid && (password.dirty || password.touched)">
+    <label [class.error-text]="password.invalid && (password.dirty || password.touched)" for="password">Password</label>
+    <span [class.error-line]="password.invalid && (password.dirty || password.touched)" class="line"></span>
+    <span [class.error-line]="password.invalid && (password.dirty || password.touched)" class="bottom-2 line"></span>
+  </div>
+  <div class="open-input-2">
+    <input placeholder=" " required id="confirmPassword" type="confirmPassword" #confirmPassword="ngModel"
+      [(ngModel)]="userAuthService.signupModel.confirmPassword" name="confirmPassword"
+      [class.error-border]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+    <label [class.error-text]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+      for="confirmPassword">Confirm Password</label>
+    <span [class.error-line]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+      class="line"></span>
+    <span [class.error-line]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+      class="bottom-2 line"></span>
+  </div>
+
+  <a class="login" href="/login"> Already have an account? </a>
+  <button class="signup-btn">Sign Up</button>
+
 
 </form>

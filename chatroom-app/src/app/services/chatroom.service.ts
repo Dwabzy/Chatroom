@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -67,7 +67,11 @@ export class ChatroomService {
   }
 
   getVisitorDetails = () => {
-
     return this.http.get(environment.apiBaseUrl + '/getVisitorDetails', this.noAuthHeader);
+  }
+
+  viewChat = (visitorId: string) => {
+    const params = new HttpParams().append('visitorId', visitorId);
+    return this.http.get(environment.apiBaseUrl + '/viewChat', { params: params });
   }
 }

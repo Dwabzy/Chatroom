@@ -79,12 +79,30 @@ button {
   }
 }
 
-// @media only screen and (max-width: 1225px) and (min-width: 867px) {
-//   .visitor-list {
-//     .visitor {
-//       width: 100%;
-//       min-width: 0px;
-//       height: auto;
-//     }
-//   }
-// }
+.no-visitor {
+  height: inherit;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  span {
+    position: absolute;
+    bottom: -2em;
+    font-size: 2em;
+    font-family: cursive;
+
+    color: var(--primary-text);
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .no-visitor {
+    max-height: 70%;
+
+    img {
+
+      width: auto;
+    }
+  }
+}

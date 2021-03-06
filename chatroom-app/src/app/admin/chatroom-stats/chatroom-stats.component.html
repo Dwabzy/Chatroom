@@ -1,19 +1,67 @@
-<div class="statistics">
-  <div class="heading">
-    <div class="column"> Chatroom Name </div>
-    <div class="column"> Visitor Id</div>
-    <div class="column"> Visitor Name</div>
-    <div class="column"> View Chat</div>
-    <div class="column"> Visitor Details</div>
-    <div class="column"> Verified</div>
-  </div>
-
-  <div class="visitor" *ngFor="let visitor of visitorDetails">
-    <div class="column"> {{visitor.chatroomName}} </div>
-    <div class="column"> {{visitor.visitorId}} </div>
-    <div class="column"> {{visitor.visitorName}} </div>
-    <div class="column"> <button>View Chat</button></div>
-    <div class="column"> <button>View Details</button> </div>
-    <div class="column"> Tick </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p *ngFor="let message of visitorChat">
+          {{timeService.getTimeMessage(message.time)}}
+          <span *ngIf="message.sender==='visitor'">{{message.visitorName}}</span>
+          <span *ngIf="message.sender==='agent'">{{message.agentName}}</span>
+          :
+          {{message.message}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
+<!-- Model Ends here -->
+
+<table class="stats-table">
+  <thead>
+    <tr>
+      <th>Chatroom Name</th>
+      <th>Visitor Name</th>
+      <th>Visitor IP</th>
+      <th>Visitor Id</th>
+      <th>View Chat</th>
+      <th>Visitor Details</th>
+      <th>Verified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let visitor of visitorDetails">
+      <th>{{visitor.chatroomName}}</th>
+      <td> {{visitor.visitorName}}</td>
+      <td> {{visitor.visitorIp.slice(7)}}</td>
+      <td> {{visitor.visitorId}}</td>
+      <td>
+        <button type="button" (click)="viewChat(visitor.visitorId)" class="btn btn-sm" data-bs-toggle="modal"
+          data-bs-target="#exampleModal">
+          View Chat
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-sm">View Details</button>
+      </td>
+      <td>
+        <svg *ngIf="visitor.hasJoinedChat" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
+          class="bi bi-person-check-fill" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+          <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+        </svg>
+        <svg *ngIf="!visitor.hasJoinedChat" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+          class="bi bi-person-x-fill" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z" />
+        </svg>
+      </td>
+    </tr>
+  </tbody>
+</table>

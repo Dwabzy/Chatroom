@@ -16,6 +16,9 @@
 
   <!-- Message Box -->
   <div class="message-window">
+    <div *ngIf="this.selectedVisitor === null" class="no-selected-visitor">
+      <span>{{displayMessage}}</span>
+    </div>
     <div #messageContainer class="message-container">
       <div *ngFor="let message of selectedMessages; let i = index" class="message">
 
@@ -25,8 +28,6 @@
         <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-right">
           {{message.timeMessage}}
         </div>
-
-
         <div *ngIf="message.sender==='visitor'" class="received-message media-left">
           {{message.message}}
         </div>

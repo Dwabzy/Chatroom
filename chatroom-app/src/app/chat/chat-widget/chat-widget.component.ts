@@ -1,3 +1,4 @@
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TimeService } from 'src/app/services/time.service';
@@ -18,6 +19,9 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   agentName: string = "Bot";
   visitorId: string = "";
 
+  maxHeight: string = "500px";
+  maxWidth: string = "350px";
+
   @Input() messages: Array<any> = [];
 
   @ViewChild('titleBar') titleBar!: ElementRef;
@@ -28,14 +32,30 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   @ViewChild('visitorMessage') visitorMessage!: ElementRef;
 
 
-  constructor(public activatedRoute: ActivatedRoute, private webSocketService: WebSocketService, private timeService: TimeService) { }
+  constructor(public activatedRoute: ActivatedRoute,
+    private breakpointObserver: BreakpointObserver,
+    private webSocketService: WebSocketService, private timeService: TimeService) { }
   ngAfterViewInit(): void {
-    this.chatWindow.nativeElement.style.maxHeight = "0px";
-    this.chatWindow.nativeElement.style.maxWidth = "0px";
+    this.chatWindow.nativeElement.style.maxHeight = "0%";
+    this.chatWindow.nativeElement.style.maxWidth = "0%";
   }
 
 
   ngOnInit(): void {
+
+    this.breakpointObserver.observe([
+      '(max-width: 409px)'
+    ]).subscribe((state: BreakpointState) => {
+      if (state.breakpoints['(max-width: 409px)']) {
+        this.maxHeight = "75%";
+        this.maxWidth = "95%";
+        if (this.toggleChatWindow) {
+          this.chatWindow.nativeElement.style.maxHeight = "70%";
+          this.chatWindow.nativeElement.style.maxWidth = "95%";
+        }
+      }
+    });
+
     this.theme = localStorage.getItem('theme') === 'Dark' ? 'dark-theme' : 'light-theme';
     this.chatroomName = this.activatedRoute.snapshot.params.chatroomName;
 
@@ -115,8 +135,8 @@ export class ChatWidgetComponent implements OnInit, AfterViewInit {
   toggleChatWindowHandler = (): void => {
     this.toggleChatWindow = !this.toggleChatWindow;
     if (this.toggleChatWindow) {
-      this.chatWindow.nativeElement.style.maxHeight = "600px";
-      this.chatWindow.nativeElement.style.maxWidth = "400px";
+      this.chatWindow.nativeElement.style.maxHeight = this.maxHeight;
+      this.chatWindow.nativeElement.style.maxWidth = this.maxWidth;
     }
     else {
       this.chatWindow.nativeElement.style.maxHeight = "0px";

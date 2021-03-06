@@ -1,45 +1,45 @@
 <div class="widget">
-  <button class="icon-button" (click)="toggleChatWindowHandler()">
-    <chat-icon></chat-icon>
+  <button type="button" class="icon-button" (click)="toggleChatWindowHandler()">
+    <chat-icon class="icon"></chat-icon>
   </button>
-  <div #chatWindow class="chat-window ">
-    <div #titleBar class="title-bar">
-      <div class="title">{{agentName}}</div>
-      <div class="spacer"></div>
-      <button (click)="toggleTheme()" matTooltip="Toggle dark theme">
-        <mat-icon>
-          brightness_6
-        </mat-icon>
-      </button>
-      <button>
-        <mat-icon> close </mat-icon>
-      </button>
-    </div>
+</div>
+<div #chatWindow class="chat-window ">
+  <div #titleBar class="title-bar">
+    <div class="title">{{agentName}}</div>
+    <div class="spacer"></div>
+    <button (click)="toggleTheme()" matTooltip="Toggle dark theme">
+      <mat-icon>
+        brightness_6
+      </mat-icon>
+    </button>
+    <button>
+      <mat-icon> close </mat-icon>
+    </button>
+  </div>
 
-    <div #chatBody class="chat-body">
-      <div *ngFor="let message of messages; let i = index" class="message-container">
+  <div #chatBody class="chat-body">
+    <div *ngFor="let message of messages; let i = index" class="message-container">
 
-        <div #customerMessage *ngIf="message.sender==='visitor'" class="sent-message media-right">
-          {{message.message}}
-        </div>
-        <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-right">
-          {{message.timeMessage}}
-        </div>
-
-        <div *ngIf="message.sender==='agent'" class="received-message media-left">
-          {{message.message}}
-        </div>
-        <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-left">
-          {{message.timeMessage}}</div>
-        <div class="space-2"></div>
+      <div #customerMessage *ngIf="message.sender==='visitor'" class="sent-message media-right">
+        {{message.message}}
       </div>
-      <form (ngSubmit)="sendMessage()">
-        <div #textBox class="text-box">
-          <input #visitorMessage class="message-input" placeholder="Enter your text" />
-          <button (click)="sendMessage()" class="send-button">
-            <mat-icon> send </mat-icon>
-          </button>
-        </div>
-      </form>
+      <div *ngIf="message.sender==='visitor' && message.displayTime" class="time media-right">
+        {{message.timeMessage}}
+      </div>
+
+      <div *ngIf="message.sender==='agent'" class="received-message media-left">
+        {{message.message}}
+      </div>
+      <div *ngIf="message.sender==='agent' && message.displayTime" class="time media-left">
+        {{message.timeMessage}}</div>
+      <div class="space-2"></div>
     </div>
+    <form (ngSubmit)="sendMessage()">
+      <div #textBox class="text-box">
+        <input #visitorMessage class="message-input" placeholder="Enter your text" />
+        <button (click)="sendMessage()" class="send-button">
+          <mat-icon> send </mat-icon>
+        </button>
+      </div>
+    </form>
   </div>

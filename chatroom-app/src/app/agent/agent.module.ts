@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { ChatComponent } from './chat/chat.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { FormsModule } from '@angular/forms';
+import { ChatModule } from '../chat/chat.module';
 
 
 
@@ -14,7 +15,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    ChatModule
   ]
 })
 export class AgentModule { }
