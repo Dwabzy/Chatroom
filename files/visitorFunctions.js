@@ -13,7 +13,8 @@ exports.createVisitor = (assignedAgentId, visitorId, visitorIp, chatroomName, ha
 }
 
 exports.doesVisitorExist = (visitorIp, chatroomName) => {
-    let sql = 'Select * from visitor_details where visitor_ip=? or chatroom_name=?;';
+    console.log(visitorIp, chatroomName);
+    let sql = 'Select * from visitor_details where visitor_ip=? and chatroom_name=?;';
     return new Promise((resolve, reject) => {
         connection.query(sql, [visitorIp, chatroomName], (err, results) => {
             if (err) console.log(err);

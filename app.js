@@ -10,7 +10,7 @@ var uuid = require('uuid-random');
 
 
 var userAuth = require('./routes/userAuth');
-var chatroom = require('./routes/chatroom');
+var Chatroom = require('./routes/chatroom');
 
 
 
@@ -43,7 +43,7 @@ app.use(session({
 }));
 
 new userAuth(app);
-new chatroom(app);
+new Chatroom(app);
 
 server.listen(5000, () => console.log("Running on port 5000"))
 

@@ -4,7 +4,6 @@ var { getVisitorDetails } = require('../files/visitorFunctions');
 var { getVisitorChat } = require('../files/chatFunctions');
 
 
-
 class Chatroom {
 
     constructor(app) {
